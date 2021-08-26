@@ -807,6 +807,14 @@ int CFbxMesh::SetVertex(TFbxVertex* pVertex, int nCount)
 	return nCopy;
 }
 
+void CFbxMesh::CalcBoundingBox(DirectX::XMFLOAT3 & vMin, DirectX::XMFLOAT3 & vMax)
+{
+}
+
+void CFbxMesh::CalcBoundingSphere(DirectX::XMFLOAT3 & vCenter, float & fRadius)
+{
+}
+
 //---------------------------------------------------------------------------------------
 // 子のメッシュも含めたインデックス数を取得
 //---------------------------------------------------------------------------------------
