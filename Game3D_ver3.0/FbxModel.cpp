@@ -809,10 +809,43 @@ int CFbxMesh::SetVertex(TFbxVertex* pVertex, int nCount)
 
 void CFbxMesh::CalcBoundingBox(DirectX::XMFLOAT3 & vMin, DirectX::XMFLOAT3 & vMax)
 {
+	TFbxVertex* pVertex = m_pVertex;
+	for (DWORD i = 0; i < m_dwNumVert; ++i, ++pVertex) {
+		if (vMin.x > pVertex->vPos.x)
+			vMin.x = pVertex->vPos.x;
+		if (vMin.y > pVertex->vPos.y)
+			vMin.y = pVertex->vPos.y;
+		if (vMin.z > pVertex->vPos.z)
+			vMin.z = pVertex->vPos.z;
+		if (vMax.x < pVertex->vPos.x)
+			vMax.x = pVertex->vPos.x;
+		if (vMax.y < pVertex->vPos.y)
+			vMax.y = pVertex->vPos.y;
+		if (vMax.z < pVertex->vPos.z)
+			vMax.z = pVertex->vPos.z;
+	}
+	CFbxMesh** ppChild = m_ppChild;
+	for (DWORD i = 0; i < m_dwNumChild; ++i, ++ppChild) {
+		(*ppChild)->CalcBoundingBox(vMin, vMax);
+	}
 }
 
 void CFbxMesh::CalcBoundingSphere(DirectX::XMFLOAT3 & vCenter, float & fRadius)
 {
+	TFbxVertex* pVertex = m_pVertex;
+	for (DWORD i = 0; i < m_dwNumVert; ++i, ++pVertex) {
+		float fDX = pVertex->vPos.x - vCenter.x;
+		float fDY = pVertex->vPos.y - vCenter.y;
+		float fDZ = pVertex->vPos.z - vCenter.z;
+		float fDist = sqrtf(fDX * fDX + fDY * fDY +
+			fDZ * fDZ);
+		if (fRadius < fDist)
+			fRadius = fDist;
+	}
+	CFbxMesh** ppChild = m_ppChild;
+	for (DWORD i = 0; i < m_dwNumChild; ++i, ++ppChild) {
+		(*ppChild)->CalcBoundingSphere(vCenter, fRadius);
+	}
 }
 
 //---------------------------------------------------------------------------------------
