@@ -13,9 +13,10 @@
   コンストラクタ
 ===========================================================================*/
 PlayerClass::PlayerClass(Vector3f _pos, LightClass _light)
-	: m_Pos(_pos.x, _pos.y, _pos.z), m_Light(_light), m_Move(0, 0, 0), m_Size(0.5f, 0.5f, 0.5f),
+	:m_pModel(nullptr), m_Pos(_pos.x, _pos.y, _pos.z), m_Light(_light), m_Move(0, 0, 0), m_Size(0.5f, 0.5f, 0.5f),
 	m_vCenter(0, 0, 0), m_vBBox(0, 0, 0), m_vPosBBox(0, 0, 0)
 {
+	XMStoreFloat4x4(&m_World, XMMatrixIdentity());
 	Init();
 }
 /*===========================================================================
@@ -33,6 +34,8 @@ HRESULT PlayerClass::Init()
 	m_bCanJump = false;
 	m_bIsHit = false;
 
+	// FBXファイルの読み込み
+	SAFE_DELETE(m_pModel);
 	m_pModel = new CFbxModel();
 	hr = m_pModel->Init(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_BALL]);
 	if (SUCCEEDED(hr)) {
@@ -42,6 +45,7 @@ HRESULT PlayerClass::Init()
 		// 境界ボックス初期化
 		m_vCenter = m_pModel->GetCenter();
 		m_vBBox = m_pModel->GetBBox();
+		m_vBBox = m_vBBox * m_Size;
 	}
 	hr = m_box.Init(&m_vBBox);
 	m_vPosBBox = m_vCenter;
@@ -60,7 +64,18 @@ void PlayerClass::Uninit()
 ===========================================================================*/
 void PlayerClass::Update()
 {
-	PrintDebugProc("ret%f", m_vBBox.x);
+	// 境界ボックス(AABB)の移動
+	XMStoreFloat3(&m_vPosBBox,
+		XMVector3TransformCoord(
+			XMLoadFloat3(&m_vCenter),
+			XMLoadFloat4x4(&m_World)));
+	XMFLOAT4X4 matrix;
+	XMStoreFloat4x4(&matrix, XMMatrixTranslation(
+		m_vPosBBox.x, m_vPosBBox.y, m_vPosBBox.z));
+	m_box.SetWorld(matrix);
+
+
+	PrintDebugProc("ret%f\n", m_vBBox.z);
 }
 /*===========================================================================
 描画処理
@@ -91,6 +106,14 @@ void PlayerClass::Draw()
 	m_pModel->Render(m_World, pCamera->GetView(),
 		pCamera->GetProj(), eTransparentOnly);
 	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
+	if (m_bIsHit) {
+		XMFLOAT4 vRed(1.0f, 0.0f, 0.0f, 0.5f);
+		m_box.SetColor(&vRed);
+	}
+	else {
+		XMFLOAT4 vGreen(0.0f, 1.0f, 0.0f, 0.5f);
+		m_box.SetColor(&vGreen);
+	}
 	m_box.Draw(m_Light);	// 境界ボックス描画
 	SetCullMode(CULLMODE_CW);	// 前面カリング(表を描かない)
 	SetZWrite(true);

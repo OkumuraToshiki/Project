@@ -25,7 +25,7 @@ enum eTexture
 	fbxƒtƒ@ƒCƒ‹–¼
 ===========================================================================*/
 static LPCSTR pszModelPath[MODEL_MAX] = {
-	"data/model/iceBall01.fbx",
+	"data/model/X_wing.fbx",
 	"data/model/box.fbx",
 	"data/model/sky.fbx"
 };
