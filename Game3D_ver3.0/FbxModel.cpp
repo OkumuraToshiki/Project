@@ -778,7 +778,9 @@ int CFbxMesh::GetVertex(TFbxVertex* pVertex, int nCount)
 	}
 	return nCopy;
 }
-
+//---------------------------------------------------------------------------------------
+// 子のメッシュも含めた頂点配列を設定
+//---------------------------------------------------------------------------------------
 int CFbxMesh::SetVertex(TFbxVertex* pVertex, int nCount)
 {
 	int nCopy = 0;
@@ -806,7 +808,9 @@ int CFbxMesh::SetVertex(TFbxVertex* pVertex, int nCount)
 
 	return nCopy;
 }
-
+//---------------------------------------------------------------------------------------
+// 頂点座標最小値最大値取得
+//---------------------------------------------------------------------------------------
 void CFbxMesh::CalcBoundingBox(DirectX::XMFLOAT3 & vMin, DirectX::XMFLOAT3 & vMax)
 {
 	TFbxVertex* pVertex = m_pVertex;
@@ -829,7 +833,9 @@ void CFbxMesh::CalcBoundingBox(DirectX::XMFLOAT3 & vMin, DirectX::XMFLOAT3 & vMa
 		(*ppChild)->CalcBoundingBox(vMin, vMax);
 	}
 }
-
+//---------------------------------------------------------------------------------------
+// 中心座標からの最長距離取得
+//---------------------------------------------------------------------------------------
 void CFbxMesh::CalcBoundingSphere(DirectX::XMFLOAT3 & vCenter, float & fRadius)
 {
 	TFbxVertex* pVertex = m_pVertex;
