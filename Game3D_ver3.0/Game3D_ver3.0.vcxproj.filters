@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\hlsl">
+      <UniqueIdentifier>{0627359f-021e-47a3-8374-1d28bd2ebf16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Camera">
+      <UniqueIdentifier>{8d3cf222-09c6-49bd-a081-9e39ef2542d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Charactar">
+      <UniqueIdentifier>{ff489ee9-39f8-4b94-b219-fc083ded848f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\UI">
+      <UniqueIdentifier>{8e9dcacb-c1be-4927-b5cd-c270d84ff9f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\System">
+      <UniqueIdentifier>{0989b33b-877e-46aa-a3aa-41795ffea523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene">
+      <UniqueIdentifier>{bc1b722c-6c66-49bb-8dff-796b3dc20d4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Camera">
+      <UniqueIdentifier>{2b41bad4-c91e-4a83-a8a1-c1fb5486d5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Charactar">
+      <UniqueIdentifier>{bf76e94a-9603-4f99-a06d-6059395e62e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\UI">
+      <UniqueIdentifier>{99f6698d-f8b0-4873-8c04-47f65f453a52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\System">
+      <UniqueIdentifier>{d8efae89-706e-4e5b-93a4-eede653f737e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Light">
+      <UniqueIdentifier>{a4e56d0e-b6db-446a-854d-88df8cab3b91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Light">
+      <UniqueIdentifier>{717c7413-679c-45fb-b5e5-a5aa35900a9f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxModel.cpp">
+      <Filter>ソース ファイル\Charactar</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\Charactar</Filter>
+    </ClCompile>
+    <ClCompile Include="debugproc.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>ソース ファイル\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Charactar</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="light.cpp">
+      <Filter>ソース ファイル\Light</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ヘッダー ファイル\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxModel.h">
+      <Filter>ヘッダー ファイル\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ヘッダー ファイル\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="debugproc.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>ヘッダー ファイル\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="polygon.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダー ファイル\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="FileName.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="light.h">
+      <Filter>ヘッダー ファイル\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorClass.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="sampleFBX.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="FbxModelPixel.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="FbxModelVertex.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="Pixel2D.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="Pixel.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="Vertex2D.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="Vertex.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

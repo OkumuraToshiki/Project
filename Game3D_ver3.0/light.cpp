@@ -1,0 +1,60 @@
+/*===========================================================================
+  light.cpp
+　ライト管理
+===========================================================================*/
+#include "light.h"
+/*===========================================================================
+   コンストラクタ
+===========================================================================*/
+LightClass::LightClass()
+{
+}
+/*===========================================================================
+   デストラクタ
+===========================================================================*/
+LightClass::~LightClass()
+{
+}
+/*===========================================================================
+   ゲット関数
+===========================================================================*/
+const Vector3f& LightClass::GetDirection()const
+{
+	return m_direction;
+}
+
+const Vector4f& LightClass::GetDiffuse()
+{
+	return m_diffuse;
+}
+
+const Vector4f& LightClass::GetAmbient()
+{
+	return m_ambient;
+}
+const Vector4f& LightClass::GetSpecular()
+{
+	return m_specular;
+}
+/*===========================================================================
+   セット関数
+===========================================================================*/
+void LightClass::SetDirection(const Vector3f _dir)
+{
+	m_direction = _dir;
+}
+
+void LightClass::SetDiffuse(const Vector4f _diffuse)
+{
+	m_diffuse = _diffuse;
+}
+
+void LightClass::SetAmbient(const Vector4f _ambient)
+{
+	m_ambient = _ambient;
+}
+
+void LightClass::SetSpecular(const Vector4f _specular)
+{
+	m_specular = _specular;
+}
