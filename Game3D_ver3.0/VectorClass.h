@@ -89,6 +89,10 @@ struct Vector3f : public XMFLOAT3
 		this->x = other.x; this->y = other.y; this->z = other.z;
 		return *this;
 	}
+	XMFLOAT3& operator=(const Vector3f& other) {
+		XMFLOAT3 f3 = XMFLOAT3(other.x, other.y, other.z);
+		return f3;
+	}
 	//ƒLƒƒƒXƒg
 	operator XMVECTOR() const {
 		return XMLoadFloat3(this);

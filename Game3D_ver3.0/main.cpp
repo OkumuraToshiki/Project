@@ -401,7 +401,7 @@ HRESULT Init(HWND hWnd, BOOL bWindow)
 		return hr;
 
 	hr = g_Title.Init();
-	g_pPlayer = new PlayerClass(Vector3f(0, 0, 100), g_MainLight);
+	g_pPlayer = new PlayerClass(Vector3f(0, 0, 200), g_MainLight);
 	return hr;
 }
 
@@ -487,6 +487,7 @@ void Update(void)
 
 	CCamera::Get()->Update();
 	g_Title.Update();
+	g_pPlayer->Update();
 }
 
 //=============================================================================

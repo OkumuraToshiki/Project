@@ -8,11 +8,13 @@
 #include "FbxModel.h"
 #include "Box.h"
 #include "FileName.hpp"
+#include "debugproc.h"
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
 PlayerClass::PlayerClass(Vector3f _pos, LightClass _light)
-	: m_Pos(_pos.x, _pos.y, _pos.z), m_Light(_light), m_Move(0, 0, 0), m_Size(0.5f, 0.5f, 0.5f)
+	: m_Pos(_pos.x, _pos.y, _pos.z), m_Light(_light), m_Move(0, 0, 0), m_Size(0.5f, 0.5f, 0.5f),
+	m_vCenter(0, 0, 0), m_vBBox(0, 0, 0), m_vPosBBox(0, 0, 0)
 {
 	Init();
 }
@@ -38,8 +40,8 @@ HRESULT PlayerClass::Init()
 		m_pModel->SetLight(m_Light);
 
 		// 境界ボックス初期化
-		/*m_vCenter = m_pModel->GetCenter();
-		m_vBBox = m_pModel->GetBBox();*/
+		m_vCenter = m_pModel->GetCenter();
+		m_vBBox = m_pModel->GetBBox();
 	}
 	hr = m_box.Init(&m_vBBox);
 	m_vPosBBox = m_vCenter;
@@ -58,7 +60,7 @@ void PlayerClass::Uninit()
 ===========================================================================*/
 void PlayerClass::Update()
 {
-	
+	PrintDebugProc("ret%f", m_vBBox.x);
 }
 /*===========================================================================
 描画処理
