@@ -1193,6 +1193,26 @@ void CFbxModel::DestroyMesh(CFbxMesh* pMesh)
 	delete pMesh;
 }
 
+void CFbxModel::CalcBoundingSphere()
+{
+	XMFLOAT3 vMin, vMax;
+	vMin.x = vMin.y = vMin.z = FLT_MAX;
+	vMax.x = vMax.y = vMax.z = -FLT_MAX;
+	if (m_pRootMesh) {
+		m_pRootMesh->CalcBoundingBox(vMin, vMax);
+		m_vCenter.x = (vMax.x + vMin.x) / 2.0f;
+		m_vCenter.y = (vMax.y + vMin.y) / 2.0f;
+		m_vCenter.z = (vMax.z + vMin.z) / 2.0f;
+		m_vBBox.x = (vMax.x - vMin.x) / 2.0f;
+		m_vBBox.y = (vMax.y - vMin.y) / 2.0f;
+		m_vBBox.z = (vMax.z - vMin.z) / 2.0f;
+
+		m_fRadius = -1.0f;
+		m_pRootMesh->CalcBoundingSphere(m_vCenter,
+			m_fRadius);
+	}
+}
+
 //---------------------------------------------------------------------------------------
 // アニメーション フレーム更新
 //---------------------------------------------------------------------------------------
@@ -1305,6 +1325,36 @@ int CFbxModel::SetVertex(TFbxVertex* pVertex, int nCount)
 		return m_pRootMesh->SetVertex(pVertex, nCount);
 	}
 	return 0;
+}
+//---------------------------------------------------------------------------------------
+// 境界ボックス(境界球)中心座標取得
+//---------------------------------------------------------------------------------------
+XMFLOAT3& CFbxModel::GetCenter()
+{
+	if (m_fRadius < 0.0f) {
+		CalcBoundingSphere();
+	}
+	return m_vCenter;
+}
+//---------------------------------------------------------------------------------------
+// 境界ボックス サイズ(縦横奥行きの半分)取得
+//---------------------------------------------------------------------------------------
+XMFLOAT3& CFbxModel::GetBBox()
+{
+	if (m_fRadius < 0.0f) {
+		CalcBoundingSphere();
+	}
+	return m_vBBox;
+}
+//---------------------------------------------------------------------------------------
+// 境界球半径取得
+//---------------------------------------------------------------------------------------
+float CFbxModel::GetRadius()
+{
+	if (m_fRadius < 0.0f) {
+		CalcBoundingSphere();
+	}
+	return m_fRadius;
 }
 
 //---------------------------------------------------------------------------------------
