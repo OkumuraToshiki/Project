@@ -401,7 +401,7 @@ HRESULT Init(HWND hWnd, BOOL bWindow)
 		return hr;
 
 	hr = g_Title.Init();
-	g_pPlayer = new PlayerClass(Vector3f(0, 0, 200), g_MainLight);
+	g_pPlayer = new PlayerClass(Vector3f(0, -20, 200), g_MainLight);
 	return hr;
 }
 
@@ -423,7 +423,6 @@ void ReleaseBackBuffer()
 //=============================================================================
 void Uninit(void)
 {
-	g_pPlayer->Uninit();
 	SAFE_DELETE(g_pPlayer);
 	g_Title.Uninit();
 	// “ü—Íˆ—I—¹ˆ—

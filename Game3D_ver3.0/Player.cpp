@@ -13,9 +13,11 @@
   コンストラクタ
 ===========================================================================*/
 PlayerClass::PlayerClass(Vector3f _pos, LightClass _light)
-	:m_pModel(nullptr), m_Pos(_pos.x, _pos.y, _pos.z), m_Light(_light), m_Move(0, 0, 0), m_Size(0.5f, 0.5f, 0.5f),
-	m_vCenter(0, 0, 0), m_vBBox(0, 0, 0), m_vPosBBox(0, 0, 0)
+	:m_pModel(nullptr), m_Pos(_pos), m_Light(_light), m_Move(0, 0, 0), m_Size(0.5f, 0.5f, 0.5f),
+	m_box(nullptr)
 {
+	m_bCanJump = false;
+	m_bIsHit = false;
 	XMStoreFloat4x4(&m_World, XMMatrixIdentity());
 	Init();
 }
@@ -24,6 +26,7 @@ PlayerClass::PlayerClass(Vector3f _pos, LightClass _light)
 ===========================================================================*/
 PlayerClass::~PlayerClass()
 {
+	Uninit();
 }
 /*===========================================================================
 初期処理
@@ -31,12 +34,12 @@ PlayerClass::~PlayerClass()
 HRESULT PlayerClass::Init()
 {
 	HRESULT hr = S_OK;
-	m_bCanJump = false;
-	m_bIsHit = false;
+	
 
 	// FBXファイルの読み込み
 	SAFE_DELETE(m_pModel);
 	m_pModel = new CFbxModel();
+	m_box = new BoxClass();
 	hr = m_pModel->Init(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_BALL]);
 	if (SUCCEEDED(hr)) {
 		m_pModel->SetCamera(CCamera::Get()->GetEye());
@@ -45,9 +48,15 @@ HRESULT PlayerClass::Init()
 		// 境界ボックス初期化
 		m_vCenter = m_pModel->GetCenter();
 		m_vBBox = m_pModel->GetBBox();
-		m_vBBox = m_vBBox * m_Size;
+		m_vBBox *= m_Size;
+		{
+	TCHAR szMsg[256];
+	_stprintf_s(szMsg, 256, _T("m_vBBox={%f, %f, %f}"),
+m_vBBox.x, m_vBBox.y, m_vBBox.z);
+	MessageBox(GetMainWnd(), szMsg, _T("確認"), MB_OK);
+}
 	}
-	hr = m_box.Init(&m_vBBox);
+	hr = m_box->Init(&m_vBBox);
 	m_vPosBBox = m_vCenter;
 	return hr;
 }
@@ -56,7 +65,8 @@ HRESULT PlayerClass::Init()
 ===========================================================================*/
 void PlayerClass::Uninit()
 {
-	m_box.Uninit();
+	m_box->Uninit();
+	SAFE_DELETE(m_box);
 	SAFE_DELETE(m_pModel);
 }
 /*===========================================================================
@@ -72,10 +82,13 @@ void PlayerClass::Update()
 	XMFLOAT4X4 matrix;
 	XMStoreFloat4x4(&matrix, XMMatrixTranslation(
 		m_vPosBBox.x, m_vPosBBox.y, m_vPosBBox.z));
-	m_box.SetWorld(matrix);
+	m_box->SetWorld(matrix);
 
-
-	PrintDebugProc("ret%f\n", m_vBBox.z);
+	PrintDebugProc("m_vCenter.x%f\n", m_vCenter.x);
+	PrintDebugProc("m_vCenter.y%f\n", m_vCenter.y);
+	PrintDebugProc("m_vCenter.z%f\n", m_vCenter.z);
+	PrintDebugProc("m_vBBox.x%f\n", m_vBBox.x);
+	PrintDebugProc("m_vBBox.z%f\n", m_vBBox.z);
 }
 /*===========================================================================
 描画処理
@@ -108,13 +121,13 @@ void PlayerClass::Draw()
 	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
 	if (m_bIsHit) {
 		XMFLOAT4 vRed(1.0f, 0.0f, 0.0f, 0.5f);
-		m_box.SetColor(&vRed);
+		m_box->SetColor(&vRed);
 	}
 	else {
 		XMFLOAT4 vGreen(0.0f, 1.0f, 0.0f, 0.5f);
-		m_box.SetColor(&vGreen);
+		m_box->SetColor(&vGreen);
 	}
-	m_box.Draw(m_Light);	// 境界ボックス描画
+	m_box->Draw(m_Light);	// 境界ボックス描画
 	SetCullMode(CULLMODE_CW);	// 前面カリング(表を描かない)
 	SetZWrite(true);
 }

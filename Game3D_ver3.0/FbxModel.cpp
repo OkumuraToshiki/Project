@@ -1200,12 +1200,12 @@ void CFbxModel::CalcBoundingSphere()
 	vMax.x = vMax.y = vMax.z = -FLT_MAX;
 	if (m_pRootMesh) {
 		m_pRootMesh->CalcBoundingBox(vMin, vMax);
-		m_vCenter.x = (vMax.x + vMin.x) / 2.0f;
-		m_vCenter.y = (vMax.y + vMin.y) / 2.0f;
-		m_vCenter.z = (vMax.z + vMin.z) / 2.0f;
-		m_vBBox.x = (vMax.x - vMin.x) / 2.0f;
-		m_vBBox.y = (vMax.y - vMin.y) / 2.0f;
-		m_vBBox.z = (vMax.z - vMin.z) / 2.0f;
+		m_vCenter.x = (vMax.x + vMin.x) *0.5f;
+		m_vCenter.y = (vMax.y + vMin.y) *0.5f;
+		m_vCenter.z = (vMax.z + vMin.z) *0.5f;
+		m_vBBox.x = (vMax.x - vMin.x) *0.5f;
+		m_vBBox.y = (vMax.y - vMin.y) *0.5f;
+		m_vBBox.z = (vMax.z - vMin.z) *0.5f;
 
 		m_fRadius = -1.0f;
 		m_pRootMesh->CalcBoundingSphere(m_vCenter,

@@ -47,7 +47,8 @@ struct Vector2f :public XMFLOAT2
 	//正規化
 	void Normalize() {
 		*this = XMVector2Normalize(XMVECTOR(*this));
-	}
+	} 
+	
 };
 /*===========================================================================
 	3Dベクトル
@@ -55,7 +56,7 @@ struct Vector2f :public XMFLOAT2
 struct Vector3f : public XMFLOAT3
 {
 	Vector3f() = default;
-	Vector3f(float x, float y, float z)
+	constexpr Vector3f(float x, float y, float z):XMFLOAT3()
 	{
 		this->x = x; this->y = y; this->z = z;
 	}
@@ -67,17 +68,20 @@ struct Vector3f : public XMFLOAT3
 
 	Vector3f& operator +=(const Vector3f& other) { return *this = *this + other; }
 	Vector3f& operator -=(const Vector3f& other) { return *this = *this - other; }
+	Vector3f& operator *=(const Vector3f& other) { x *= other.x; y *= other.y; z *= other.z; return *this; }
+	Vector3f& operator /=(const Vector3f& other) { x /= other.x; y /= other.y; z /= other.z; return *this; }
 	inline BOOL operator == (const Vector3f&r) const { return x == r.x && y == r.y && z == r.z; }
 	inline BOOL operator != (const Vector3f&r) const { return x != r.x || y != r.y || z != r.z; }
-	inline XMVECTOR operator *(const float r) const { return Vector3f(x * r, y * r, z * r); }
-	inline XMVECTOR operator /(const float r) const { return Vector3f(x / r, y / r, z / r); }
+	Vector3f& operator *=(const float r) { x *= r; y *= r; z *= r; return *this; }
+	inline Vector3f& operator /=(const float r) { return *this *= (1.0f / r); }
 
 	// ベクトルの内積
-	float Dot(Vector3f In) { return x * In.x + y * In.y + z * In.z; }
+	constexpr float Dot(Vector3f In)const { return x * In.x + y * In.y + z * In.z; }
 	// ベクトルの外積
-	Vector3f Cross(Vector3f In) { return Vector3f(y * In.z - z * In.y, z * In.x - x * In.z, x * In.y - y * In.x); }
+	constexpr Vector3f Cross(Vector3f In)const {
+		return Vector3f(y * In.z - z * In.y, z * In.x - x * In.z, x * In.y - y * In.x); }
 	// ベクトルのスケーリング
-	Vector3f Scale(float Scale) { Vector3f Result = { x * Scale, y * Scale, z * Scale }; return Result; }
+	Vector3f Scale(float Scale) { *this *= Scale;  return *this; }
 
 	//代入
 	Vector3f& operator=(const XMVECTOR& other) {
@@ -89,10 +93,7 @@ struct Vector3f : public XMFLOAT3
 		this->x = other.x; this->y = other.y; this->z = other.z;
 		return *this;
 	}
-	XMFLOAT3& operator=(const Vector3f& other) {
-		XMFLOAT3 f3 = XMFLOAT3(other.x, other.y, other.z);
-		return f3;
-	}
+	
 	//キャスト
 	operator XMVECTOR() const {
 		return XMLoadFloat3(this);
