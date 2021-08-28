@@ -6,9 +6,9 @@
 ===========================================================================*/
 #ifndef _SCENEMANAGER_H_
 #define _SCENEMANAGER_H_
+#include "BaseScene.h"
 
-class BaseScene;
-class SceneManager
+class SceneManager:public BaseScene
 {
 private:
 	BaseScene* m_pScene;
@@ -18,7 +18,8 @@ public:
 	SceneManager &operator=(const SceneManager &) = delete;
 	~SceneManager();
 
-	void update();
-	void draw() const;
+
+	BaseScene* Update();
+	void Draw() const;
 };
 #endif // !_SCENEMANAGER_H_

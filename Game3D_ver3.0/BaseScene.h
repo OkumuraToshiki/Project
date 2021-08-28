@@ -10,14 +10,18 @@ class BaseScene
 {
 private:
 protected:
+	BaseScene() {}
 	template<typename T>
 	BaseScene *makeScene();
 public:
-	virtual ~BaseScene() {}
+	BaseScene(const BaseScene &) = delete;
+	BaseScene &operator=(const BaseScene &) = delete;
+
+	virtual ~BaseScene() = default;
 	virtual void Init() = 0;
 	virtual void Uninit() = 0;
-	virtual void Update() = 0;
-	virtual void Draw() = 0;
+	virtual BaseScene* Update() = 0;
+	virtual void Draw() const= 0;
 	
 };
 #endif // !_BASESCENE_H_

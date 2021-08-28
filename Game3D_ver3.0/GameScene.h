@@ -19,7 +19,7 @@ public:
 	~GameScene();
 	void Init()override;
 	void Uninit()override;
-	void Update()override;
-	void Draw()override;
+	BaseScene* Update()override;
+	void Draw() const override;
 };
 #endif // !_GAMESCENE_H_

@@ -22,13 +22,15 @@ void TitleScene::Uninit()
 {
 }
 
-void TitleScene::Update()
+BaseScene* TitleScene::Update()
+{
+	return this;
+}
+
+void TitleScene::Draw() const
 {
 }
 
-void TitleScene::Draw()
-{
-}
 template<>
 BaseScene *BaseScene::makeScene<TitleScene>() 
 {
