@@ -26,3 +26,4 @@ void GameScene::Draw()
 template<>
 BaseScene *BaseScene::makeScene<GameScene>() {
 	return new GameScene();
+}
