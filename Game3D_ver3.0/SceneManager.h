@@ -18,7 +18,8 @@ public:
 	SceneManager &operator=(const SceneManager &) = delete;
 	~SceneManager();
 
-	void Update();
+
+	BaseScene* Update();
 	void Draw() const;
 };
 #endif // !_SCENEMANAGER_H_

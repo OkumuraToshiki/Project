@@ -23,8 +23,14 @@ SceneManager::~SceneManager()
 /*===========================================================================
   XV
 ===========================================================================*/
-void SceneManager::Update()
+BaseScene* SceneManager::Update()
 {
+	BaseScene* pCurrentScene = m_pScene->Update();
+	if (pCurrentScene != m_pScene) {
+		delete m_pScene;
+		m_pScene = pCurrentScene;
+	}
+	return m_pScene;
 }
 /*===========================================================================
   •`‰æ

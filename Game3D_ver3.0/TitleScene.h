@@ -16,7 +16,7 @@ public:
 	~TitleScene();
 	void Init()override;
 	void Uninit()override;
-	void Update()override;
-	void Draw()override;
+	BaseScene* Update()override;
+	void Draw()const override;
 };
 #endif // !_TITLESCENE_H_
