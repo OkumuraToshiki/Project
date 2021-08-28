@@ -6,11 +6,13 @@
 ===========================================================================*/
 #ifndef _BASESCENE_H_
 #define _BASESCENE_H_
+class LightClass;
 class BaseScene
 {
 private:
 protected:
-	BaseScene() {}
+	BaseScene() {
+	}
 	template<typename T>
 	BaseScene *makeScene();
 public:
@@ -22,6 +24,7 @@ public:
 	virtual void Uninit() = 0;
 	virtual BaseScene* Update() = 0;
 	virtual void Draw() const= 0;
-	
+protected:
+	//LightClass* const m_Light;
 };
 #endif // !_BASESCENE_H_

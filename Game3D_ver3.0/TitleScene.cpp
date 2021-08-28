@@ -5,6 +5,8 @@
   @date   2021/08/28
 ===========================================================================*/
 #include "TitleScene.h"
+#include "input.h"
+class GameScene;
 
 TitleScene::TitleScene()
 {
@@ -24,6 +26,10 @@ void TitleScene::Uninit()
 
 BaseScene* TitleScene::Update()
 {
+	if (GetKeyTrigger(VK_RETURN))
+	{
+		return makeScene<GameScene>();
+	}
 	return this;
 }
 

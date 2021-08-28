@@ -7,13 +7,16 @@
 #ifndef _GAMESCENE_H_
 #define _GAMESCENE_H_
 #include "BaseScene.h"
+class PlayerClass;
+class LightClass;
 /*===========================================================================
   GameScene
 ===========================================================================*/
 class GameScene :public BaseScene
 {
 private:
-
+	PlayerClass*  m_pPlayer;
+	LightClass*    m_Light;
 public:
 	GameScene();
 	~GameScene();

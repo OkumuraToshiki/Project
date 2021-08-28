@@ -35,7 +35,7 @@ private:
 
 public:
 	PlayerClass() = default;
-	PlayerClass(Vector3f _pos, LightClass _light);
+	PlayerClass(Vector3f _pos, LightClass  _light);
 	~PlayerClass();
 	HRESULT Init();
 	void    Uninit();
