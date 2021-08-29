@@ -7,11 +7,12 @@
 #ifndef _SCENEMANAGER_H_
 #define _SCENEMANAGER_H_
 #include "BaseScene.h"
-
+class FadeClass;
 class SceneManager:public BaseScene
 {
 private:
 	BaseScene* m_pScene;
+	FadeClass* m_pFade;
 public:
 	SceneManager();
 	SceneManager(const SceneManager &) = delete;

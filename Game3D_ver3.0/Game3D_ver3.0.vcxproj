@@ -127,6 +127,7 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="debugproc.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="FbxModel.h" />
     <ClInclude Include="FileName.hpp" />
     <ClInclude Include="GameScene.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="debugproc.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="FbxModel.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="input.cpp" />

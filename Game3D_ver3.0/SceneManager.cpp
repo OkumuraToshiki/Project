@@ -6,12 +6,12 @@
 ===========================================================================*/
 #include "SceneManager.h"
 #include "main.h"
-
+#include "Fade.h"
 class TitleScene;
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-SceneManager::SceneManager(): m_pScene(makeScene<TitleScene>())
+SceneManager::SceneManager(): m_pScene(makeScene<TitleScene>()),m_pFade(new FadeClass())
 {
 }
 /*===========================================================================
@@ -19,6 +19,7 @@ SceneManager::SceneManager(): m_pScene(makeScene<TitleScene>())
 ===========================================================================*/
 SceneManager::~SceneManager()
 {
+	SAFE_DELETE(m_pFade);
 	SAFE_DELETE(m_pScene);
 }
 /*===========================================================================
@@ -27,9 +28,14 @@ SceneManager::~SceneManager()
 BaseScene* SceneManager::Update()
 {
 	BaseScene* pCurrentScene = m_pScene->Update();
-	if (pCurrentScene != m_pScene) {
-		delete m_pScene;
-		m_pScene = pCurrentScene;
+	m_pFade->Update();
+	if (!m_pFade->isFade()) {
+		if (pCurrentScene != m_pScene) {
+			m_pFade->SetFadeout(1.0f);
+			delete m_pScene;
+			m_pScene = pCurrentScene;
+			m_pFade->SetFadeIn(0.5f);
+		}
 	}
 	return m_pScene;
 }
@@ -39,4 +45,6 @@ BaseScene* SceneManager::Update()
 void SceneManager::Draw() const
 {
 	m_pScene->Draw();
+	Set2DMode();
+	m_pFade->Draw();
 }
