@@ -7,11 +7,11 @@
 #include "SceneManager.h"
 #include "main.h"
 #include "Fade.h"
-class TitleScene;
+class InitScene;
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-SceneManager::SceneManager(): m_pScene(makeScene<TitleScene>()),m_pFade(new FadeClass())
+SceneManager::SceneManager(): m_pScene(makeScene<InitScene>()),m_pFade(new FadeClass())
 {
 }
 /*===========================================================================
@@ -31,10 +31,10 @@ BaseScene* SceneManager::Update()
 	m_pFade->Update();
 	if (!m_pFade->isFade()) {
 		if (pCurrentScene != m_pScene) {
-			m_pFade->SetFadeout(1.0f);
+			m_pFade->SetFadeout(10.0f);
 			delete m_pScene;
 			m_pScene = pCurrentScene;
-			m_pFade->SetFadeIn(0.5f);
+			m_pFade->SetFadeIn(1.5f);
 		}
 	}
 	return m_pScene;
@@ -45,6 +45,6 @@ BaseScene* SceneManager::Update()
 void SceneManager::Draw() const
 {
 	m_pScene->Draw();
-	Set2DMode();
+	
 	m_pFade->Draw();
 }

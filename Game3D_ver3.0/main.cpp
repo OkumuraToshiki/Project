@@ -22,7 +22,7 @@
 // マクロ定義
 //*****************************************************************************
 #define CLASS_NAME		_T("AppClass")		// ウインドウのクラス名
-#define WINDOW_NAME		_T("AT13B222_06 奥村俊紀")		// ウインドウのキャプション名
+#define WINDOW_NAME		_T("HAL名古屋 奥村俊紀")		// ウインドウのキャプション名
 
 //*****************************************************************************
 // プロトタイプ宣言
@@ -401,9 +401,8 @@ HRESULT Init(HWND hWnd, BOOL bWindow)
 	hr = InitInput();
 	if (FAILED(hr))
 		return hr;
+	//シーンマネージャー生成
 	g_pSceneMgr = new SceneManager();
-	/*hr = g_Title.Init();
-	g_pPlayer = new PlayerClass(Vector3f(0, -20, 200), g_MainLight);*/
 	return hr;
 }
 
@@ -425,8 +424,7 @@ void ReleaseBackBuffer()
 //=============================================================================
 void Uninit(void)
 {
-	/*SAFE_DELETE(g_pPlayer);
-	g_Title.Uninit();*/
+	//シーンマネージャー削除
 	SAFE_DELETE(g_pSceneMgr);
 	// 入力処理終了処理
 	UninitInput();
@@ -436,7 +434,6 @@ void Uninit(void)
 
 	// ポリゴン表示終了処理
 	UninitPolygon();
-	//メインライト終了
 	
 	//カメラ終了
 	g_Camera.Uninit();
@@ -487,9 +484,10 @@ void Update(void)
 	// ポリゴン表示更新
 	UpdatePolygon();
 
+	//カメラ更新
 	CCamera::Get()->Update();
-	/*g_Title.Update();
-	g_pPlayer->Update();*/
+	
+	//シーンマネージャー更新
 	g_pSceneMgr->Update();
 }
 
@@ -503,13 +501,14 @@ void Draw(void)
 	g_pDeviceContext->ClearRenderTargetView(g_pRenderTargetView, ClearColor);
 	g_pDeviceContext->ClearDepthStencilView(g_pDepthStencilView,
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	
+	//３D表示
 	Set3DMode();
-	//g_sceneGame.Draw();
+	//シーンマネージャー描画
 	g_pSceneMgr->Draw();
-	//g_pPlayer->Draw();
+	
+	//２D表示
 	Set2DMode();
-	//g_Title.Draw();
+	
 	// デバッグ文字列表示
 	SetPolygonColor(1.0f, 1.0f, 1.0f);
 	DrawDebugProc();
@@ -626,3 +625,8 @@ void LoopMinus(int &nVal, int nMaxCnt)
 {
 	nVal = (nVal + nMaxCnt - 1) % nMaxCnt;
 }
+
+//void MyMessageBox(LPCSTR lpCaption)
+//{
+//	MessageBox(g_hWnd,)
+//}

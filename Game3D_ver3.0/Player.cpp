@@ -10,6 +10,7 @@
 #include "FbxModel.h"
 #include "Box.h"
 #include "FileName.hpp"
+#include "input.h"
 #include "debugproc.h"
 /*===========================================================================
   コンストラクタ
@@ -37,7 +38,6 @@ HRESULT PlayerClass::Init()
 {
 	HRESULT hr = S_OK;
 	
-
 	// FBXファイルの読み込み
 	SAFE_DELETE(m_pModel);
 	m_pModel = new CFbxModel();
@@ -51,14 +51,19 @@ HRESULT PlayerClass::Init()
 		m_vCenter = m_pModel->GetCenter();
 		m_vBBox = m_pModel->GetBBox();
 		m_vBBox *= m_Size;
+		
 		{
-	TCHAR szMsg[256];
-	_stprintf_s(szMsg, 256, _T("m_vBBox={%f, %f, %f}"),
-m_vBBox.x, m_vBBox.y, m_vBBox.z);
-	MessageBox(GetMainWnd(), szMsg, _T("確認"), MB_OK);
-}
+			TCHAR szMsg[256];
+			_stprintf_s(szMsg, 256, _T("m_vBBox={%f, %f, %f}"),
+				m_pModel->GetBBox().x, m_vBBox.y, m_vBBox.z);
+			MessageBox(GetMainWnd(), szMsg, _T("確認"), MB_OK);
+		}
 	}
 	hr = m_box->Init(&m_vBBox);
+	if (FAILED(hr))
+	{
+		MessageBox(GetMainWnd(), "Boxエラー", _T("OK"), MB_OK);
+	}
 	m_vPosBBox = m_vCenter;
 	return hr;
 }
@@ -76,6 +81,14 @@ void PlayerClass::Uninit()
 ===========================================================================*/
 void PlayerClass::Update()
 {
+	
+	/*m_Move += Vector3f(-0.1f, 0.0f, -0.1f);
+	if (m_Move.x < 0)m_Move.x = 0;*/
+	if (GetKeyPress('W'))
+	{
+		m_Move.z += 1.0f;
+		m_Pos += m_Move;
+	}
 	// 境界ボックス(AABB)の移動
 	XMStoreFloat3(&m_vPosBBox,
 		XMVector3TransformCoord(
@@ -97,7 +110,7 @@ void PlayerClass::Update()
 ===========================================================================*/
 void PlayerClass::Draw()
 {
-	XMMATRIX mtxWorld, mtxSize, mtxRot, mtxTranslate;
+	XMMATRIX mtxWorld, mtxSize, /*mtxRot,*/ mtxTranslate;
 	// ワールドマトリックスの初期化
 	mtxWorld = XMMatrixIdentity();
 

@@ -96,3 +96,4 @@ void Stop_Min(int nVal, int Min);
 void LoopPlus(int& ,int );
 //値ループ(マイナス)
 void LoopMinus(int& ,int );
+
