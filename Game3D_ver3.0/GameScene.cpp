@@ -17,7 +17,7 @@ GameScene::GameScene()
 	m_Light->SetDiffuse(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
 	m_Light->SetAmbient(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
 	m_Light->SetSpecular(Vector4f(0.2f, 0.2f, 0.2f, 1.0f));
-	m_pPlayer = new PlayerClass(Vector3f(0, -20, 100), *m_Light);
+	m_pPlayer = new PlayerClass(Vector3f(0, 0, 100), *m_Light);
 }
 /*===========================================================================
   デストラクタ
@@ -52,6 +52,10 @@ BaseScene* GameScene::Update()
 void GameScene::Draw() const
 {
 	m_pPlayer->Draw();
+}
+std::string GameScene::GetSceneName()
+{
+	return "GameScene";
 }
 /*===========================================================================
   

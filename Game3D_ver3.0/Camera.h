@@ -1,5 +1,12 @@
-// カメラ [Camera.h]
-#pragma once
+/*===========================================================================
+  @file   Camera.h
+  @brief  カメラのベース
+  @author HAL名古屋
+  @date
+===========================================================================*/
+#ifndef _CAMERA_H_
+#define _CAMERA_H_
+
 #include "main.h"
 
 class CCamera
@@ -17,7 +24,7 @@ protected:
 	static XMFLOAT3	m_vNowEye;	// 現在の視点
 	static XMFLOAT3	m_vNowLook;	// 現在の注視点
 	static XMFLOAT3	m_vNowUp;	// 現在の上方ベクトル
-
+	XMFLOAT4        m_frusW[6];        //視錘台(ワールド空間用)
 private:
 	static CCamera*	m_pCamera;	// 現在有効なカメラ
 
@@ -33,13 +40,16 @@ public:
 	XMFLOAT3& GetLook() { return m_vLook; }
 	void SetLook(XMFLOAT3 vLook) { m_vLook = vLook; }
 	static void Set(CCamera* pCamera)
-		{ m_pCamera = pCamera; }
+	{
+		m_pCamera = pCamera;
+	}
 	static CCamera* Get() { return m_pCamera; }
 
 	int CollisionViewFrustum(XMFLOAT3* pCenter, float fRadius);
-	XMMATRIX GetCameraMatrix(XMFLOAT3 vLook, XMFLOAT3 vEye,XMFLOAT3 vUp);
+	XMMATRIX GetCameraMatrix(XMFLOAT3 vLook, XMFLOAT3 vEye, XMFLOAT3 vUp);
 	XMFLOAT3 UnProjection(const XMFLOAT3& screenP);
 	void GetScreenDirection(XMFLOAT3& Start, XMFLOAT3& Dir);
 	XMFLOAT3 FPVector();
 };
 
+#endif // !_CAMERA_H_

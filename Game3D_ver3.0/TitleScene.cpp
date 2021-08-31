@@ -10,6 +10,7 @@ class GameScene;
 
 TitleScene::TitleScene()
 {
+	
 }
 
 TitleScene::~TitleScene()
@@ -35,6 +36,11 @@ BaseScene* TitleScene::Update()
 
 void TitleScene::Draw() const
 {
+}
+
+std::string TitleScene::GetSceneName()
+{
+	return "TitleScene";
 }
 
 template<>

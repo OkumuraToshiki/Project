@@ -16,12 +16,13 @@
   コンストラクタ
 ===========================================================================*/
 PlayerClass::PlayerClass(Vector3f _pos, LightClass _light)
-	:m_pModel(nullptr), m_Pos(_pos), m_Light(_light), m_Move(0, 0, 0), m_Size(0.5f, 0.5f, 0.5f),
+	:m_pModel(nullptr), m_Pos(_pos), m_Light(_light), m_Move(0, 0, 0),m_Rot(0,0,0), m_Size(0.5f, 0.5f, 0.5f),
 	m_box(nullptr)
 {
 	m_bCanJump = false;
 	m_bIsHit = false;
 	XMStoreFloat4x4(&m_World, XMMatrixIdentity());
+	r = 0;
 	Init();
 }
 /*===========================================================================
@@ -52,12 +53,12 @@ HRESULT PlayerClass::Init()
 		m_vBBox = m_pModel->GetBBox();
 		m_vBBox *= m_Size;
 		
-		{
+		/*{
 			TCHAR szMsg[256];
 			_stprintf_s(szMsg, 256, _T("m_vBBox={%f, %f, %f}"),
 				m_pModel->GetBBox().x, m_vBBox.y, m_vBBox.z);
 			MessageBox(GetMainWnd(), szMsg, _T("確認"), MB_OK);
-		}
+		}*/
 	}
 	hr = m_box->Init(&m_vBBox);
 	if (FAILED(hr))
@@ -81,9 +82,10 @@ void PlayerClass::Uninit()
 ===========================================================================*/
 void PlayerClass::Update()
 {
-	
-	/*m_Move += Vector3f(-0.1f, 0.0f, -0.1f);
-	if (m_Move.x < 0)m_Move.x = 0;*/
+	if (GetKeyPress(VK_L)) {
+		m_Pos = RotateQuaternion(Vector3f(0, 1, 0), m_Pos, RAD(2));
+
+	}
 	if (GetKeyPress('W'))
 	{
 		m_Move.z += 1.0f;
@@ -110,14 +112,14 @@ void PlayerClass::Update()
 ===========================================================================*/
 void PlayerClass::Draw()
 {
-	XMMATRIX mtxWorld, mtxSize, /*mtxRot,*/ mtxTranslate;
+	XMMATRIX mtxWorld, mtxSize, mtxRot, mtxTranslate;
 	// ワールドマトリックスの初期化
 	mtxWorld = XMMatrixIdentity();
 
 	mtxSize = XMMatrixScaling(m_Size.x, m_Size.y, m_Size.z);
 	mtxWorld = XMMatrixMultiply(mtxWorld, mtxSize);
-	/*mtxRot = XMMatrixRotationRollPitchYaw();
-	mtxWorld = XMMatrixMultiply(mtxWorld, mtxRot);*/
+	mtxRot = XMMatrixRotationRollPitchYaw(m_Rot.x, m_Rot.y, m_Rot.z);
+	mtxWorld = XMMatrixMultiply(mtxWorld, mtxRot);
 	// 移動を反映
 	mtxTranslate = XMMatrixTranslation(m_Pos.x, m_Pos.y, m_Pos.z);
 	mtxWorld = XMMatrixMultiply(mtxWorld, mtxTranslate);
@@ -125,7 +127,7 @@ void PlayerClass::Draw()
 	XMStoreFloat4x4(&m_World, mtxWorld);
 
 	CCamera* pCamera = CCamera::Get();
-	// FBXファイル表示
+	// ---FBXファイル表示---
 	SetBlendState(BS_NONE);			// アルファ処理しない
 	m_pModel->Render(m_World, pCamera->GetView(),
 		pCamera->GetProj(), eOpacityOnly);
@@ -134,6 +136,7 @@ void PlayerClass::Draw()
 	m_pModel->Render(m_World, pCamera->GetView(),
 		pCamera->GetProj(), eTransparentOnly);
 	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
+	//---ボックス表示---
 	if (m_bIsHit) {
 		XMFLOAT4 vRed(1.0f, 0.0f, 0.0f, 0.5f);
 		m_box->SetColor(&vRed);
@@ -145,6 +148,20 @@ void PlayerClass::Draw()
 	m_box->Draw(m_Light);	// 境界ボックス描画
 	SetCullMode(CULLMODE_CW);	// 前面カリング(表を描かない)
 	SetZWrite(true);
+}
+/*===========================================================================
+座標取得
+===========================================================================*/
+Vector3f PlayerClass::GetPos()const
+{
+	return m_Pos;
+}
+/*===========================================================================
+ワールド変換取得
+===========================================================================*/
+XMFLOAT4X4& PlayerClass::GetWorld()
+{
+	return m_World;
 }
 /*===========================================================================
 ジャンプできるか

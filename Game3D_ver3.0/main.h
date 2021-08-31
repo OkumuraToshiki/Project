@@ -40,6 +40,7 @@ using namespace DirectX;
 
 #define	NUM_VERTEX		(4)					// ’¸“_”
 #define	NUM_POLYGON		(2)					// ƒ|ƒŠƒSƒ“”
+#define RAD(x)          (XM_PI*x/180.0f)
 
 enum EBlendState {
 	BS_NONE = 0,							// ”¼“§–¾‡¬–³‚µ

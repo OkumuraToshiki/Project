@@ -26,9 +26,9 @@ FadeClass::~FadeClass()
 ===========================================================================*/
 void FadeClass::Update()
 {
-	if (m_time > 0.0f)
+	if (isFade())
 	{
-		m_time -= 1.0f / 60;
+		m_time -= 1.0f / 60.0f;
 		if (m_time < 0.0f)
 		{
 			m_time = 0;
@@ -50,7 +50,7 @@ void FadeClass::Draw()
 	//fade out
 	if (m_isFadeOut)
 	{
-		SetPolygonAlpha(1.0 - (m_time / m_startTime));//現在の時間を最大値で割る０から１
+		SetPolygonAlpha(1.0f - (m_time / m_startTime));//現在の時間を最大値で割る０から１
 	}
 	else {
 		//fade in
@@ -58,6 +58,7 @@ void FadeClass::Draw()
 	}
 	UpdatePolygon();
 	DrawPolygon(GetDeviceContext());
+	Set3DMode();
 }
 /*===========================================================================
   シーンをフェードイン

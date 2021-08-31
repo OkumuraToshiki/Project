@@ -19,9 +19,10 @@ public:
 	SceneManager &operator=(const SceneManager &) = delete;
 	~SceneManager();
 
-	void Init() {};
-	void Uninit() {};
+	void Init() {}
+	void Uninit() {}
 	BaseScene* Update();
 	void Draw() const;
+	std::string GetSceneName() { return "SceneManager"; }
 };
 #endif // !_SCENEMANAGER_H_

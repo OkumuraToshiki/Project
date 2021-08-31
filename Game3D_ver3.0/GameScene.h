@@ -24,5 +24,6 @@ public:
 	void Uninit()override;
 	BaseScene* Update()override;
 	void Draw() const override;
+	std::string GetSceneName();
 };
 #endif // !_GAMESCENE_H_

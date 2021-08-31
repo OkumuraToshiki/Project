@@ -6,6 +6,7 @@
 ===========================================================================*/
 #ifndef _BASESCENE_H_
 #define _BASESCENE_H_
+#include <string>
 class LightClass;
 class BaseScene
 {
@@ -24,6 +25,7 @@ public:
 	virtual void Uninit() = 0;
 	virtual BaseScene* Update() = 0;
 	virtual void Draw() const= 0;
+	virtual std::string GetSceneName() = 0;
 protected:
 	//LightClass* const m_Light;
 };

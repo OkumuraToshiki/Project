@@ -8,7 +8,7 @@
 #define _PLAYER_H_
 
 #include "main.h"
-#include "VectorClass.h"
+#include "Quaternion.h"
 #include "Box.h"
 #include "light.h"
 
@@ -21,6 +21,7 @@ class PlayerClass
 private:
 	Vector3f  m_Pos;
 	Vector3f  m_Move;
+	Vector3f  m_Rot;
 	Vector3f  m_Size;
 	XMFLOAT4X4 m_World;
 
@@ -32,6 +33,7 @@ private:
 	Vector3f      m_vPosBBox;    // 境界ボックス中心座標(ワールド空間)
 	bool          m_bCanJump;
 	bool          m_bIsHit;
+	float r;
 
 public:
 	PlayerClass() = default;
@@ -41,6 +43,8 @@ public:
 	void    Uninit();
 	void    Update();
 	void    Draw();
+	Vector3f GetPos()const;
+	XMFLOAT4X4& GetWorld();
 private:
 	bool canJump();
 };

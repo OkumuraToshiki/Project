@@ -19,6 +19,7 @@ public:
 	void Uninit()override {}
 	BaseScene* Update()override { return makeScene<TitleScene>(); }
 	void Draw()const override {}
+	std::string GetSceneName() { return "InitScene"; }
 };
 #endif // !_INITSCENE_H_
 
