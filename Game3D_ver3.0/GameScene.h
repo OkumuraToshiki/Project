@@ -12,7 +12,7 @@ class PlayerClass;
 class EnemyClass;
 class LightClass;
 /*===========================================================================
-  GameScene
+  GameSceneƒNƒ‰ƒX
 ===========================================================================*/
 class GameScene :public BaseScene
 {

@@ -43,7 +43,7 @@ HRESULT EnemyClass::Init()
 	if (m_nRef == 0) {
 		SAFE_DELETE(m_pModel);
 		m_pModel = new CFbxModel();
-		hr = m_pModel->Init(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_BOX]);
+		hr = m_pModel->Init(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_BALL]);
 		if (SUCCEEDED(hr)) {
 			m_pModel->SetCamera(CCamera::Get()->GetEye());
 			m_pModel->SetLight(m_Light);
@@ -57,13 +57,12 @@ HRESULT EnemyClass::Init()
 			return hr;
 		}
 	}
+	//ボックス初期化
 	m_box = new BoxClass();
 	hr = m_box->Init(&m_vBBox);
-	if (FAILED(hr))
-	{
-		MessageBox(GetMainWnd(), "Boxエラー", _T("OK"), MB_OK);
-	}
 	m_vPosBBox = m_vCenter;
+	//参照カウンタ++
+	m_nRef++;
 	return hr;
 }
 /*===========================================================================
@@ -85,6 +84,15 @@ void EnemyClass::Uninit()
 ===========================================================================*/
 void EnemyClass::Update()
 {
+	// 境界ボックス(AABB)の移動
+	XMStoreFloat3(&m_vPosBBox,
+		XMVector3TransformCoord(
+			XMLoadFloat3(&m_vCenter),
+			XMLoadFloat4x4(&m_World)));
+	XMFLOAT4X4 matrix;
+	XMStoreFloat4x4(&matrix, XMMatrixTranslation(
+		m_vPosBBox.x, m_vPosBBox.y, m_vPosBBox.z));
+	m_box->SetWorld(matrix);
 }
 /*===========================================================================
   描画処理

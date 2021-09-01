@@ -7,6 +7,9 @@
 #ifndef _RESULTSCENE_H_
 #define _RESULTSCENE_H_
 #include "BaseScene.h"
+/*===========================================================================
+  ResultSceneƒNƒ‰ƒX
+===========================================================================*/
 class ResultScene:public BaseScene
 {
 private:

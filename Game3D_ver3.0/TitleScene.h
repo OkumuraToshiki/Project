@@ -7,6 +7,9 @@
 #ifndef _TITLESCENE_H_
 #define _TITLESCENE_H_
 #include "BaseScene.h"
+/*===========================================================================
+  TitleSceneƒNƒ‰ƒX
+===========================================================================*/
 class TitleScene:public BaseScene
 {
 private:
