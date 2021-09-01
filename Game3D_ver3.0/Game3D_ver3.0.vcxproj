@@ -131,6 +131,7 @@
     <ClInclude Include="FbxModel.h" />
     <ClInclude Include="FileName.hpp" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="InitScene.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
@@ -141,6 +142,7 @@
     <ClInclude Include="polygon.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ResultScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
@@ -152,6 +154,7 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="debugproc.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="FbxModel.cpp" />
     <ClCompile Include="GameScene.cpp" />
@@ -164,6 +167,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="polygon.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />

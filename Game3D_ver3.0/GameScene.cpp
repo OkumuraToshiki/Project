@@ -7,7 +7,10 @@
 #include "GameScene.h"
 #include "TPCamera.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "light.h"
+#include "input.h"
+class ResultScene;
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
@@ -21,12 +24,14 @@ GameScene::GameScene()
 	m_Light->SetAmbient(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
 	m_Light->SetSpecular(Vector4f(0.2f, 0.2f, 0.2f, 1.0f));
 	m_pPlayer = new PlayerClass(Vector3f(0, 0, 100), *m_Light);
+	m_pEnemy = new EnemyClass(Vector3f(0, 0, 200), *m_Light);
 }
 /*===========================================================================
   デストラクタ
 ===========================================================================*/
 GameScene::~GameScene()
 {
+	SAFE_DELETE(m_pEnemy);
 	SAFE_DELETE(m_pPlayer);
 	SAFE_DELETE(m_pTPcamera);
 }
@@ -49,6 +54,11 @@ BaseScene* GameScene::Update()
 {
 	m_pTPcamera->Update(m_pPlayer);
 	m_pPlayer->Update();
+	m_pEnemy->Update();
+	if (GetKeyTrigger(VK_RETURN))
+	{
+		return makeScene<ResultScene>();
+	}
 	return this;
 }
 /*===========================================================================
@@ -57,6 +67,7 @@ BaseScene* GameScene::Update()
 void GameScene::Draw() const
 {
 	m_pPlayer->Draw();
+	m_pEnemy->Draw();
 }
 std::string GameScene::GetSceneName()
 {
