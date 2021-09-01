@@ -7,6 +7,7 @@
 #ifndef _GAMESCENE_H_
 #define _GAMESCENE_H_
 #include "BaseScene.h"
+class TPCamera;
 class PlayerClass;
 class LightClass;
 /*===========================================================================
@@ -15,6 +16,7 @@ class LightClass;
 class GameScene :public BaseScene
 {
 private:
+	TPCamera*     m_pTPcamera;
 	PlayerClass*  m_pPlayer;
 	LightClass*    m_Light;
 public:

@@ -22,7 +22,6 @@ PlayerClass::PlayerClass(Vector3f _pos, LightClass _light)
 	m_bCanJump = false;
 	m_bIsHit = false;
 	XMStoreFloat4x4(&m_World, XMMatrixIdentity());
-	r = 0;
 	Init();
 }
 /*===========================================================================
@@ -83,9 +82,14 @@ void PlayerClass::Uninit()
 void PlayerClass::Update()
 {
 	if (GetKeyPress(VK_L)) {
+		m_Pos = RotateQuaternion(Vector3f(0, 1, 0), m_Pos, -RAD(2));
+
+	}
+	if (GetKeyPress(VK_J)) {
 		m_Pos = RotateQuaternion(Vector3f(0, 1, 0), m_Pos, RAD(2));
 
 	}
+	
 	if (GetKeyPress('W'))
 	{
 		m_Move.z += 1.0f;

@@ -5,6 +5,7 @@
   @date   2021/08/28
 ===========================================================================*/
 #include "GameScene.h"
+#include "TPCamera.h"
 #include "Player.h"
 #include "light.h"
 /*===========================================================================
@@ -12,6 +13,8 @@
 ===========================================================================*/
 GameScene::GameScene()
 {
+	m_pTPcamera = new TPCamera();
+	CCamera::Set(m_pTPcamera);
 	m_Light = new LightClass();
 	m_Light->SetDirection(Vector3f(0.5f, -1.0f, 0.5f));
 	m_Light->SetDiffuse(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
@@ -25,6 +28,7 @@ GameScene::GameScene()
 GameScene::~GameScene()
 {
 	SAFE_DELETE(m_pPlayer);
+	SAFE_DELETE(m_pTPcamera);
 }
 /*===========================================================================
   ‰Šúˆ—
@@ -43,6 +47,7 @@ void GameScene::Uninit()
 ===========================================================================*/
 BaseScene* GameScene::Update()
 {
+	m_pTPcamera->Update(m_pPlayer);
 	m_pPlayer->Update();
 	return this;
 }

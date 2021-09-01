@@ -33,7 +33,7 @@ private:
 	Vector3f      m_vPosBBox;    // 境界ボックス中心座標(ワールド空間)
 	bool          m_bCanJump;
 	bool          m_bIsHit;
-	float r;
+	
 
 public:
 	PlayerClass() = default;
