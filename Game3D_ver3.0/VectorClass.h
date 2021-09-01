@@ -67,7 +67,6 @@ struct Vector3f : public XMFLOAT3
 		XMVECTOR temp = other;
 		XMStoreFloat3(this, temp);
 	}
-
 	Vector3f& operator +=(const Vector3f& other) { return *this = *this + other; }
 	Vector3f& operator -=(const Vector3f& other) { return *this = *this - other; }
 	Vector3f& operator *=(const Vector3f& other) { x *= other.x; y *= other.y; z *= other.z; return *this; }

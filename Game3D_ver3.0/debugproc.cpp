@@ -72,7 +72,7 @@ void DrawDebugProc(void)
 {
 	ID3D11DeviceContext* pDeviceContext = GetDeviceContext();
 	SetPolygonColor(1.0f, 1.0f, 1.0f);
-	
+	SetPolygonAlpha(1.0f);
 	XMFLOAT2 vPos(SCREEN_WIDTH * -0.5f + FONT_WIDTH * 0.5f,
 		SCREEN_HEIGHT * 0.5f - FONT_HEIGHT * 0.5f);
 	SetPolygonTexture(g_pTexture);

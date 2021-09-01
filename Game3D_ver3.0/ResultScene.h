@@ -1,26 +1,27 @@
 /*===========================================================================
-  @file   TitleScene.h
-  @brief  タイトルシーン
+  @file   ResultScene.h
+  @brief  リザルトシーン
   @author 奥村俊紀
   @date   2021/08/28
 ===========================================================================*/
-#ifndef _TITLESCENE_H_
-#define _TITLESCENE_H_
+#ifndef _RESULTSCENE_H_
+#define _RESULTSCENE_H_
 #include "BaseScene.h"
 /*===========================================================================
-  TitleSceneクラス
+  ResultSceneクラス
 ===========================================================================*/
-class TitleScene:public BaseScene
+class ResultScene:public BaseScene
 {
 private:
 
 public:
-	TitleScene();
-	~TitleScene();
+	ResultScene();
+	~ResultScene();
 	void Init()override;
 	void Uninit()override;
 	BaseScene* Update()override;
-	void Draw()const override;
-	std::string GetSceneName()override;
+	void Draw() const override;
+	std::string GetSceneName();
 };
-#endif // !_TITLESCENE_H_
+
+#endif // !_RESULTSCENE_H_

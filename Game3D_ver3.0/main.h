@@ -40,6 +40,7 @@ using namespace DirectX;
 
 #define	NUM_VERTEX		(4)					// 頂点数
 #define	NUM_POLYGON		(2)					// ポリゴン数
+#define RAD(x)          (XM_PI*x/180.0f)
 
 enum EBlendState {
 	BS_NONE = 0,							// 半透明合成無し
@@ -96,3 +97,4 @@ void Stop_Min(int nVal, int Min);
 void LoopPlus(int& ,int );
 //値ループ(マイナス)
 void LoopMinus(int& ,int );
+

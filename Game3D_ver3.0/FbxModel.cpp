@@ -922,6 +922,8 @@ CFbxModel::CFbxModel()
 	m_nAnimFrame = 0;
 	m_nAnimStack = 0;
 	m_pMaterial = nullptr;
+	m_vCenter = m_vBBox = XMFLOAT3(0, 0, 0);
+	m_fRadius = -1.0f;
 }
 
 //---------------------------------------------------------------------------------------

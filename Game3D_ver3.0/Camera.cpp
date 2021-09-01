@@ -1,22 +1,58 @@
-// カメラ [Camera.cpp]
+/*===========================================================================
+  @file   Camera.cpp
+  @brief  カメラのベース
+  @author HAL名古屋
+  @date
+  ->08/27 Draw()関数を改変
+===========================================================================*/
 #include "Camera.h"
 #include "debugproc.h"
 #include "input.h"
 
-// 静的メンバ
+/*===========================================================================
+   静的メンバ変数
+===========================================================================*/
 CCamera* CCamera::m_pCamera = nullptr;
-XMFLOAT3 CCamera::m_vNowEye;	// 現在の視点
-XMFLOAT3 CCamera::m_vNowLook;	// 現在の注視点
-XMFLOAT3 CCamera::m_vNowUp;		// 現在の上方ベクトル
+Vector3f CCamera::m_vNowEye;	// 現在の視点
+Vector3f CCamera::m_vNowLook;	// 現在の注視点
+Vector3f CCamera::m_vNowUp;		// 現在の上方ベクトル
+/*===========================================================================
+   コンストラクタ
+===========================================================================*/
+CCamera::CCamera()
+{
+	m_vEye = Vector3f(0.0f, 100.0f, -100.0f);
+	m_vLook = Vector3f(0.0f, 0.0f, 0.0f);
+	m_vUp = Vector3f(0.0f, 1.0f, 0.0f);
+	m_fFOVY = XMConvertToRadians(45);
+	m_fAspect = (float)SCREEN_WIDTH / SCREEN_HEIGHT;
+	m_fNearZ = 10.0f;
+	m_fFarZ = 10000.0f;
+	m_vNowEye = m_vEye;
+	m_vNowLook = m_vLook;
+	m_vNowUp = m_vUp;
+	for (int i = 0; i < 6; ++i)
+	{
+		m_frusW[i] = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	}
 
-XMFLOAT4 m_frusW[6];//視錘台(ワールド空間用)
-// 初期化
+	Update();
+}
+/*===========================================================================
+   デストラクタ
+===========================================================================*/
+CCamera::~CCamera()
+{
+}
+/*===========================================================================
+   初期化
+===========================================================================*/
 HRESULT CCamera::Init()
 {
 	HRESULT hr = S_OK;
-	m_vEye = XMFLOAT3(0.0f, 0.0f, -100.0f);
-	m_vLook = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_vUp = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	m_vEye = Vector3f(0.0f, 100.0f, -100.0f);
+	m_vLook = Vector3f(0.0f, 0.0f, 0.0f);
+	m_vUp = Vector3f(0.0f, 1.0f, 0.0f);
 	m_fFOVY = XMConvertToRadians(45);
 	m_fAspect = (float)SCREEN_WIDTH / SCREEN_HEIGHT;
 	m_fNearZ = 10.0f;
@@ -33,13 +69,17 @@ HRESULT CCamera::Init()
 	return hr;
 }
 
-// 終了処理
+/*===========================================================================
+   終了
+===========================================================================*/
 void CCamera::Uninit()
 {
 	
 }
 
-// 更新
+/*===========================================================================
+   更新
+===========================================================================*/
 void CCamera::Update()
 {
 	// 視点、注視点、上方ベクトルを近づける
@@ -65,11 +105,13 @@ void CCamera::Update()
 			m_fNearZ, m_fFarZ));
 
 
-	PrintDebugProc("ｼﾃﾝ:%f %f %f\n", m_vNowEye.x, m_vNowEye.y, m_vNowEye.z);
-}
-//視錘台との交差判定  (境界球使用)
-//戻り値 0非表示 1部分表示 2表示
-int CCamera::CollisionViewFrustum(XMFLOAT3* pCenter, float fRadius)
+	PrintDebugProc("ｼﾃﾝ:%f %f %f\n", m_vEye.x, m_vEye.y, m_vEye.z);
+}/*===========================================================================
+    //視錘台との交差判定  (境界球使用)
+    //引数　pCenter->モデルの中心、fRadius->モデルの半径
+	//戻り値 0非表示 1部分表示 2表示
+===========================================================================*/
+int CCamera::CollisionViewFrustum(Vector3f* pCenter, float fRadius)
 {
 	bool bHit = false;
 	XMVECTOR frusw, center, dot;
@@ -87,9 +129,12 @@ int CCamera::CollisionViewFrustum(XMFLOAT3* pCenter, float fRadius)
 	if (bHit) return-1;//面を跨ぐ
 	return 1;//完全に内側
 }
-XMMATRIX CCamera::GetCameraMatrix(XMFLOAT3 vLook, XMFLOAT3 vEye,XMFLOAT3 vUp)
+/*===========================================================================
+  
+===========================================================================*/
+XMMATRIX CCamera::GetCameraMatrix(Vector3f vLook, Vector3f vEye,Vector3f vUp)
 {
-	XMFLOAT3 forward, right, up;
+	Vector3f forward, right, up;
 	XMVECTOR vF, vR, vU;
 	XMFLOAT4X4 world;
 	XMMATRIX mW = XMMatrixIdentity();
@@ -135,10 +180,12 @@ XMMATRIX CCamera::GetCameraMatrix(XMFLOAT3 vLook, XMFLOAT3 vEye,XMFLOAT3 vUp)
 	mW = XMLoadFloat4x4(&world);
 	return mW;
 }
-//逆射影行列計算
-XMFLOAT3 CCamera::UnProjection(const XMFLOAT3& screenP)
+/*===========================================================================
+   //逆射影行列計算
+===========================================================================*/
+Vector3f CCamera::UnProjection(const Vector3f& screenP)
 {
-	XMFLOAT3 vDev = XMFLOAT3(screenP.x, screenP.y, screenP.z);
+	Vector3f vDev = Vector3f(screenP.x, screenP.y, screenP.z);
 	vDev.x /= SCREEN_WIDTH * 0.5f;
 	vDev.y /= SCREEN_HEIGHT * 0.5f;
 
@@ -152,14 +199,17 @@ XMFLOAT3 CCamera::UnProjection(const XMFLOAT3& screenP)
 	XMStoreFloat3(&vDev, xmv);
 	return vDev;
 }
-void CCamera::GetScreenDirection(XMFLOAT3& Start, XMFLOAT3& Dir)
+/*===========================================================================
+   スクリーンから向き
+===========================================================================*/
+void CCamera::GetScreenDirection(Vector3f& Start, Vector3f& Dir)
 {
 	XMFLOAT2 vPos = GetMousePos();
-	XMFLOAT3 vS = XMFLOAT3(vPos.x, vPos.y, 0.0f);
+	Vector3f vS = Vector3f(vPos.x, vPos.y, 0.0f);
 	Start = UnProjection(vS);
 
 	vS.z = 0.9f;
-	XMFLOAT3 vE = UnProjection(vS);
+	Vector3f vE = UnProjection(vS);
 
 	//方向ベクトル
 	Dir.x = vE.x - Start.x;
@@ -169,15 +219,17 @@ void CCamera::GetScreenDirection(XMFLOAT3& Start, XMFLOAT3& Dir)
 	XMVECTOR xmv = XMVector3Normalize(XMLoadFloat3(&Dir));
 	XMStoreFloat3(&Dir, xmv);
 }
-//方向ベクトル
-XMFLOAT3 CCamera::FPVector()
+/*===========================================================================
+  //方向ベクトル
+===========================================================================*/
+Vector3f CCamera::FPVector()
 {
 
 	XMVECTOR vVec = XMVectorSet(m_vNowLook.x - m_vNowEye.x,
 		m_vNowLook.y - m_vNowEye.y,
 		m_vNowLook.z - m_vNowEye.z, 0.0f);
 	vVec = XMVector3Normalize(vVec);
-	XMFLOAT3 vDir;
+	Vector3f vDir;
 	XMStoreFloat3(&vDir, vVec);
 	PrintDebugProc("ﾍﾞｸﾀｰ:%f,%f,%f\n", vDir.x, vDir.y, vDir.z);
 	return vDir;

@@ -1,66 +1,85 @@
 /*===========================================================================
-  @file   TitleScene.cpp
-  @brief  タイトルシーン
+  @file   Fade.cpp
+  @brief  遷移時のフェード
   @author 奥村俊紀
   @date   2021/08/28
 ===========================================================================*/
-#include "TitleScene.h"
-#include "input.h"
-class GameScene;
+#include"Fade.h"
+#include"polygon.h"
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-TitleScene::TitleScene()
+FadeClass::FadeClass()
 {
-	
+	m_startTime = 0.0f;
+	m_time = 0.0f;
+	m_isFadeOut = false;
 }
 /*===========================================================================
   デストラクタ
 ===========================================================================*/
-TitleScene::~TitleScene()
-{
-}
-/*===========================================================================
-  初期処理
-===========================================================================*/
-void TitleScene::Init()
-{
-}
-/*===========================================================================
-  終了処理
-===========================================================================*/
-void TitleScene::Uninit()
+FadeClass::~FadeClass()
 {
 }
 /*===========================================================================
   更新処理
 ===========================================================================*/
-BaseScene* TitleScene::Update()
+void FadeClass::Update()
 {
-	if (GetKeyTrigger(VK_RETURN))
+	if (isFade())
 	{
-		return makeScene<GameScene>();
+		m_time -= 1.0f / 60.0f;
+		if (m_time < 0.0f)
+		{
+			m_time = 0;
+		}
 	}
-	return this;
 }
 /*===========================================================================
-  描画処理
+  描画
 ===========================================================================*/
-void TitleScene::Draw() const
+void FadeClass::Draw()
 {
+	Set2DMode();
+	SetPolygonAngle(0);
+	SetPolygonSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	SetPolygonTexture(NULL);
+	SetPolygonColor(0, 0, 0);
+	SetPolygonPos(0, 0);
+
+	//fade out
+	if (m_isFadeOut)
+	{
+		SetPolygonAlpha(1.0f - (m_time / m_startTime));//現在の時間を最大値で割る０から１
+	}
+	else {
+		//fade in
+		SetPolygonAlpha(m_time / m_startTime);
+	}
+	UpdatePolygon();
+	DrawPolygon(GetDeviceContext());
+	Set3DMode();
 }
 /*===========================================================================
-  シーン名取得
+  シーンをフェードイン
 ===========================================================================*/
-std::string TitleScene::GetSceneName()
+void FadeClass::SetFadeIn(float time)
 {
-	return "TitleScene";
+	m_startTime = m_time = time;
+	m_isFadeOut = false;
 }
 /*===========================================================================
-  タイトルシーン生成
+  シーンをフェードアウト
 ===========================================================================*/
-template<>
-BaseScene *BaseScene::makeScene<TitleScene>() 
+void FadeClass::SetFadeout(float time)
 {
-	return new TitleScene();
+	m_startTime = m_time = time;
+	m_isFadeOut = true;
+}
+/*===========================================================================
+  フェード中か
+===========================================================================*/
+bool FadeClass::isFade()
+{
+	return m_time > 0;
 }

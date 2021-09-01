@@ -127,9 +127,12 @@
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="debugproc.h" />
+    <ClInclude Include="Fade.h" />
     <ClInclude Include="FbxModel.h" />
     <ClInclude Include="FileName.hpp" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="InitScene.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
@@ -137,19 +140,25 @@
     <ClInclude Include="model.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="polygon.h" />
+    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ResultScene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TPCamera.h" />
     <ClInclude Include="VectorClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="debugproc.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Fade.cpp" />
     <ClCompile Include="FbxModel.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="InitScene.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,10 +166,13 @@
     <ClCompile Include="model.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="polygon.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="ResultScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TPCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="sampleFBX.rc" />
