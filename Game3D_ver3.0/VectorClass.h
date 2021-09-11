@@ -32,6 +32,18 @@ struct Vector2f :public XMFLOAT2
 	inline XMVECTOR operator *(const float r) const { return Vector2f(x * r, y * r); }
 	inline XMVECTOR operator /(const float r) const { return Vector2f(x / r, y / r); }
 
+	// ベクトルの内積
+	constexpr float Dot(Vector2f In)const { return x * In.x + y * In.y ; }
+	//// ベクトルの外積
+	//constexpr Vector3f Cross(Vector2f In)const {
+	//	return Vector3f(y * In.z - z * In.y, z * In.x - x * In.z, x * In.y - y * In.x);
+	//}
+	//角度を求める
+	float Angle(Vector2f In) {
+		float cosine_sita = Dot(In) / (Length()*In.Length());
+		float sita = acosf(cosine_sita);
+		return sita;
+	}
 	//代入
 	Vector2f& operator=(const XMVECTOR& other) {
 		XMVECTOR temp = other;
@@ -83,7 +95,12 @@ struct Vector3f : public XMFLOAT3
 		return Vector3f(y * In.z - z * In.y, z * In.x - x * In.z, x * In.y - y * In.x); }
 	// ベクトルのスケーリング
 	Vector3f Scale(float Scale) { *this *= Scale;  return *this; }
-
+	//角度を求める
+	float Angle(Vector3f In) {
+		float cosine_sita = Dot(In) / (Length()*In.Length());
+		float sita = acosf(cosine_sita);
+		return sita;
+	}
 	//代入
 	Vector3f& operator=(const XMVECTOR& other) {
 		XMVECTOR temp = other;

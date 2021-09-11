@@ -5,6 +5,7 @@
 //
 //=============================================================================
 #include "main.h"
+#include "AssimpModel.h"
 #include "input.h"
 #include "polygon.h"
 #include "debugproc.h"
@@ -382,10 +383,10 @@ HRESULT Init(HWND hWnd, BOOL bWindow)
 	CCamera::Set(&g_Camera);
 
 	//メインライト
-	g_MainLight.SetDirection(Vector3f(0.5f, -1.0f, 0.5f));
+	/*g_MainLight.SetDirection(Vector3f(0.5f, -1.0f, 0.5f));
 	g_MainLight.SetDiffuse(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
 	g_MainLight.SetAmbient(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
-	g_MainLight.SetSpecular(Vector4f(0.2f, 0.2f, 0.2f, 1.0f));
+	g_MainLight.SetSpecular(Vector4f(0.2f, 0.2f, 0.2f, 1.0f));*/
 	
 	// ポリゴン表示初期化
 	hr = InitPolygon(g_pDevice);
@@ -401,6 +402,9 @@ HRESULT Init(HWND hWnd, BOOL bWindow)
 	hr = InitInput();
 	if (FAILED(hr))
 		return hr;
+	// Assimp用シェーダ初期化
+	if (!CAssimpModel::InitShader(g_pDevice))
+		return E_FAIL;
 	//シーンマネージャー生成
 	g_pSceneMgr = new SceneManager();
 	return hr;
@@ -426,6 +430,10 @@ void Uninit(void)
 {
 	//シーンマネージャー削除
 	SAFE_DELETE(g_pSceneMgr);
+
+	// Assimp用シェーダ終了処理
+	CAssimpModel::UninitShader();
+
 	// 入力処理終了処理
 	UninitInput();
 
@@ -508,11 +516,11 @@ void Draw(void)
 	
 	//２D表示
 	Set2DMode();
-	
+#if _DEBUG_
 	// デバッグ文字列表示
 	SetPolygonColor(1.0f, 1.0f, 1.0f);
 	DrawDebugProc();
-
+#endif
 	// バックバッファとフロントバッファの入れ替え
 	g_pSwapChain->Present(g_uSyncInterval, 0);
 }

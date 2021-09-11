@@ -5,14 +5,17 @@
   @date   2021/08/28
 ===========================================================================*/
 #include "TitleScene.h"
+#include "Camera.h"
 #include "input.h"
 class GameScene;
+class InputDebugScene;
+extern CCamera g_Camera;
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
 TitleScene::TitleScene()
 {
-	
+	CCamera::Set(&g_Camera);
 }
 /*===========================================================================
   デストラクタ
@@ -41,6 +44,12 @@ BaseScene* TitleScene::Update()
 	{
 		return makeScene<GameScene>();
 	}
+#if _DEBUG_
+	if (GetKeyPress(VK_D) && GetKeyTrigger(VK_C))
+	{
+		return makeScene<InputDebugScene>();
+	}
+#endif
 	return this;
 }
 /*===========================================================================

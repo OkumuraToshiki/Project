@@ -5,20 +5,21 @@
   @date   2021/09/01
 ===========================================================================*/
 #include "Enemy.h"
+#include "AssimpModel.h"
 #include "Camera.h"
 #include "FileName.hpp"
 /*===========================================================================
   静的メンバ変数
 ===========================================================================*/
-CFbxModel* EnemyClass::m_pModel = nullptr;
-Vector3f   EnemyClass::m_vCenter = Vector3f(0, 0, 0);
-Vector3f   EnemyClass::m_vBBox = Vector3f(0, 0, 0);
-int        EnemyClass::m_nRef = 0;
+CAssimpModel* EnemyClass::m_pModel = nullptr;
+Vector3f      EnemyClass::m_vCenter = Vector3f(0, 0, 0);
+Vector3f      EnemyClass::m_vBBox = Vector3f(0, 0, 0);
+int           EnemyClass::m_nRef = 0;
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-EnemyClass::EnemyClass(Vector3f _pos, LightClass _light)
-	: m_Pos(_pos), m_Move(0, 0, 0), m_Rot(0, 0, 0), m_Size(0.5f, 0.5f, 0.5f),
+EnemyClass::EnemyClass(Vector3f _pos, LightClass* _light)
+	: m_Pos(_pos), m_Move(0, 0, 0), m_Rot(0, 0, 0), m_Size(1.0f, 1.0f, 1.0f),
 	 m_Light(_light), m_box(nullptr)
 {
 	m_bCanJump = false;
@@ -42,19 +43,20 @@ HRESULT EnemyClass::Init()
 	// FBXファイルの読み込み
 	if (m_nRef == 0) {
 		SAFE_DELETE(m_pModel);
-		m_pModel = new CFbxModel();
-		hr = m_pModel->Init(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_BALL]);
-		if (SUCCEEDED(hr)) {
-			m_pModel->SetCamera(CCamera::Get()->GetEye());
+		m_pModel = new CAssimpModel();
+		if (!m_pModel->Load(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_KNIGHT]))
+		{
+			hr = E_FAIL;
+			MessageBoxA(GetMainWnd(), "モデルデータ読込エラー", "EnemyModel", MB_OK | MB_ICONEXCLAMATION);
+		}
+		else {
+			m_pModel->SetCamera(CCamera::Get());
 			m_pModel->SetLight(m_Light);
 
 			// 境界ボックス初期化
 			m_vCenter = m_pModel->GetCenter();
 			m_vBBox = m_pModel->GetBBox();
 			m_vBBox *= m_Size;
-		}
-		else {
-			return hr;
 		}
 	}
 	//ボックス初期化
@@ -115,13 +117,14 @@ void EnemyClass::Draw()
 
 	CCamera* pCamera = CCamera::Get();
 	// ---FBXファイル表示---
-	SetBlendState(BS_NONE);			// アルファ処理しない
-	m_pModel->Render(m_World, pCamera->GetView(),
-		pCamera->GetProj(), eOpacityOnly);
-	SetZWrite(false);
-	SetBlendState(BS_ALPHABLEND);	// 半透明描画
-	m_pModel->Render(m_World, pCamera->GetView(),
-		pCamera->GetProj(), eTransparentOnly);
+	m_pModel->Draw(GetDeviceContext(), m_World);
+	//SetBlendState(BS_NONE);			// アルファ処理しない
+	//m_pModel->Render(m_World, pCamera->GetView(),
+	//	pCamera->GetProj(), eOpacityOnly);
+	//SetZWrite(false);
+	//SetBlendState(BS_ALPHABLEND);	// 半透明描画
+	//m_pModel->Render(m_World, pCamera->GetView(),
+	//	pCamera->GetProj(), eTransparentOnly);
 	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
 	//---ボックス表示---
 	if (m_bIsHit) {

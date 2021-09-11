@@ -24,7 +24,7 @@ protected:
 	static Vector3f	m_vNowEye;	// 現在の視点
 	static Vector3f	m_vNowLook;	// 現在の注視点
 	static Vector3f	m_vNowUp;	// 現在の上方ベクトル
-	XMFLOAT4        m_frusW[6];        //視錘台(ワールド空間用)
+	XMFLOAT4        m_frusW[6]; //視錘台(ワールド空間用)
 private:
 	static CCamera*	m_pCamera;	// 現在有効なカメラ
 
@@ -34,7 +34,6 @@ public:
 	virtual HRESULT Init();
 	virtual void Uninit();
 	virtual void Update();
-	//virtual void Draw();
 
 	XMFLOAT4X4& GetView() { return m_mView; }
 	XMFLOAT4X4& GetProj() { return m_mProj; }
@@ -46,12 +45,13 @@ public:
 		m_pCamera = pCamera;
 	}
 	static CCamera* Get() { return m_pCamera; }
-
 	int CollisionViewFrustum(Vector3f* pCenter, float fRadius);
-	XMMATRIX GetCameraMatrix(Vector3f vLook, Vector3f vEye, Vector3f vUp);
+	Vector3f GetAxisZ();
+private:
+	void SetFrustum();
+	XMMATRIX GetMatrix();
 	Vector3f UnProjection(const Vector3f& screenP);
 	void GetScreenDirection(Vector3f& Start, Vector3f& Dir);
-	Vector3f FPVector();
 };
 
 #endif // !_CAMERA_H_

@@ -16,15 +16,11 @@ class ResultScene;
 ===========================================================================*/
 GameScene::GameScene()
 {
-	m_pTPcamera = new TPCamera();
-	CCamera::Set(m_pTPcamera);
 	m_Light = new LightClass();
-	m_Light->SetDirection(Vector3f(0.5f, -1.0f, 0.5f));
-	m_Light->SetDiffuse(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
-	m_Light->SetAmbient(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
-	m_Light->SetSpecular(Vector4f(0.2f, 0.2f, 0.2f, 1.0f));
-	m_pPlayer = new PlayerClass(Vector3f(0, 0, 100), *m_Light);
-	m_pEnemy = new EnemyClass(Vector3f(-50, 0, 200), *m_Light);
+	m_pPlayer = new PlayerClass(Vector3f(0, 0, 0), m_Light);
+	m_pEnemy = new EnemyClass(Vector3f(-50, 0, 200), m_Light);
+	m_pTPcamera = new TPCamera(&m_pPlayer->GetPos(),&m_pPlayer->GetWorld());
+	CCamera::Set(m_pTPcamera);
 }
 /*===========================================================================
   デストラクタ
@@ -52,7 +48,6 @@ void GameScene::Uninit()
 ===========================================================================*/
 BaseScene* GameScene::Update()
 {
-	m_pTPcamera->Update(m_pPlayer);
 	m_pPlayer->Update();
 	m_pEnemy->Update();
 	if (GetKeyTrigger(VK_RETURN))
@@ -66,7 +61,8 @@ BaseScene* GameScene::Update()
 ===========================================================================*/
 void GameScene::Draw() const
 {
-	m_pEnemy->Draw();
+	Set3DMode();
+	//m_pEnemy->Draw();
 	m_pPlayer->Draw();
 	
 }

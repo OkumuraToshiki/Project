@@ -10,6 +10,8 @@
 enum eModel
 {
 	MODEL_BALL,
+	MODEL_KNIGHT,
+	MODEL_ENEMY,
 	MODEL_BOX,
 	MODEL_SKY,
 	MODEL_MAX
@@ -19,13 +21,19 @@ enum eModel
 ===========================================================================*/
 enum eTexture
 {
+	TEXTURE_FIELD,
 	TEXTURE_MAX
 };
 /*===========================================================================
 	fbxƒtƒ@ƒCƒ‹–¼
 ===========================================================================*/
 static LPCSTR pszModelPath[MODEL_MAX] = {
-	"data/model/X_wing.fbx",
+	"data/model/X_wing/X_wing.fbx",
+	"data/model/knight/DarkKnight_low.fbx",
+	"data/model/fellguard/fellguard.fbx",
 	"data/model/box.fbx",
-	"data/model/sky.fbx"
+	"data/model/sky/sky.fbx"
+};
+static LPCSTR pszTexPath[TEXTURE_MAX] = {
+	"data/texture/bullet000.jpg"
 };

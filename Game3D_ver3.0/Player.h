@@ -12,7 +12,7 @@
 #include "Box.h"
 #include "light.h"
 
-class CFbxModel;
+class CAssimpModel;
 /*===========================================================================
    プレイヤークラス
 ===========================================================================*/
@@ -25,8 +25,8 @@ private:
 	Vector3f  m_Size;
 	XMFLOAT4X4 m_World;
 
-	CFbxModel*    m_pModel;
-	LightClass    m_Light;
+	CAssimpModel*    m_pModel;
+	LightClass*    m_Light;
 	Vector3f      m_vCenter;     // 境界ボックス中心座標
 	Vector3f      m_vBBox;       // 境界ボックス サイズ
 	BoxClass*      m_box;         // 境界ボックス表示
@@ -34,16 +34,16 @@ private:
 	bool          m_bCanJump;
 	bool          m_bIsHit;
 	
-
+	float animTime;
 public:
 	PlayerClass() = default;
-	PlayerClass(Vector3f _pos, LightClass  _light);
+	PlayerClass(Vector3f _pos, LightClass*  _light);
 	~PlayerClass();
 	HRESULT Init();
 	void    Uninit();
 	void    Update();
 	void    Draw();
-	Vector3f GetPos()const;
+	Vector3f& GetPos();
 	XMFLOAT4X4& GetWorld();
 private:
 	bool canJump();

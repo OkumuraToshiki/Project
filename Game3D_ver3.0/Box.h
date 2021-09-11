@@ -28,7 +28,7 @@ public:
 	HRESULT Init(XMFLOAT3* pHalfSize);
 	void Uninit();
 	void Update();
-	void Draw(LightClass& _light);
+	void Draw(LightClass* _light);
 
 	XMFLOAT4X4& GetWorld() { return m_world; }
 	void SetWorld(XMFLOAT4X4& world) { m_world = world; }

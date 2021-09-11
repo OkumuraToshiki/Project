@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "Camera.h"
 #include "light.h"
-#include "FbxModel.h"
+#include "AssimpModel.h"
 #include "Box.h"
 #include "FileName.hpp"
 #include "input.h"
@@ -15,12 +15,13 @@
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-PlayerClass::PlayerClass(Vector3f _pos, LightClass _light)
-	:m_pModel(nullptr), m_Pos(_pos), m_Light(_light), m_Move(0, 0, 0),m_Rot(0,0,0), m_Size(0.5f, 0.5f, 0.5f),
+PlayerClass::PlayerClass(Vector3f _pos, LightClass* _light)
+	:m_pModel(nullptr), m_Pos(_pos), m_Light(_light), m_Move(0, 0, 0),m_Rot(0,0,0), m_Size(1.0f, 1.0f, 1.0f),
 	m_box(nullptr)
 {
 	m_bCanJump = false;
 	m_bIsHit = false;
+	animTime = 0;
 	XMStoreFloat4x4(&m_World, XMMatrixIdentity());
 	Init();
 }
@@ -40,11 +41,15 @@ HRESULT PlayerClass::Init()
 	
 	// FBXファイルの読み込み
 	SAFE_DELETE(m_pModel);
-	m_pModel = new CFbxModel();
+	m_pModel = new CAssimpModel();
 	m_box = new BoxClass();
-	hr = m_pModel->Init(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_BALL]);
-	if (SUCCEEDED(hr)) {
-		m_pModel->SetCamera(CCamera::Get()->GetEye());
+	if (!m_pModel->Load(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_KNIGHT]))
+	{
+		hr = E_FAIL;
+		MessageBoxA(GetMainWnd(), "モデルデータ読込エラー", "PlayerModel", MB_OK | MB_ICONEXCLAMATION);
+	}
+	else {
+		m_pModel->SetCamera(CCamera::Get());
 		m_pModel->SetLight(m_Light);
 
 		// 境界ボックス初期化
@@ -81,6 +86,11 @@ void PlayerClass::Uninit()
 ===========================================================================*/
 void PlayerClass::Update()
 {
+	CCamera* pCamera = CCamera::Get();
+	Vector2f cameraZ = Vector2f(pCamera->GetAxisZ().x, pCamera->GetAxisZ().z);
+	PrintDebugProc("cameraZ:%f %f \n", cameraZ.x, cameraZ.y);
+	if (GetKeyPress(VK_F1))m_Pos.y += 1.0f;
+	if (GetKeyPress(VK_F2))m_Pos.y -= 1.0f;
 	if (GetKeyPress(VK_L)) {
 		m_Pos = RotateQuaternion(Vector3f(0, 1, 0), m_Pos, -RAD(2));
 
@@ -89,12 +99,20 @@ void PlayerClass::Update()
 		m_Pos = RotateQuaternion(Vector3f(0, 1, 0), m_Pos, RAD(2));
 
 	}
-	
-	if (GetKeyPress('W'))
+	Vector2f axisz = Vector2f(0, 1);
+	float dir = cameraZ.Angle(axisz);
+	PrintDebugProc("dotZ %f\n", dir);
+	/*if (GetKeyPress('W'))
 	{
-		m_Move.z += 1.0f;
+		m_Move.x = 1.0f*sinf(dir);
+		m_Move.z = 1.0f*cosf(dir);
 		m_Pos += m_Move;
-	}
+	}*/
+	m_Move.x = InputPlayerMove().x;
+	m_Move.z = InputPlayerMove().y;
+	PrintDebugProc("MoveX %f\n", InputPlayerMove().x);
+	PrintDebugProc("MoveY %f\n", InputPlayerMove().y);
+	m_Pos += m_Move;
 	// 境界ボックス(AABB)の移動
 	XMStoreFloat3(&m_vPosBBox,
 		XMVector3TransformCoord(
@@ -105,11 +123,13 @@ void PlayerClass::Update()
 		m_vPosBBox.x, m_vPosBBox.y, m_vPosBBox.z));
 	m_box->SetWorld(matrix);
 
-	PrintDebugProc("m_vCenter.x%f\n", m_vCenter.x);
-	PrintDebugProc("m_vCenter.y%f\n", m_vCenter.y);
-	PrintDebugProc("m_vCenter.z%f\n", m_vCenter.z);
-	PrintDebugProc("m_vBBox.x%f\n", m_vBBox.x);
-	PrintDebugProc("m_vBBox.z%f\n", m_vBBox.z);
+	m_pModel->SetCamera(CCamera::Get());
+	m_pModel->SetLight(m_Light);
+	m_pModel->SetAnimIndex(0);
+	if (GetKeyTrigger(VK_Q)) {
+		animTime++;
+	}
+	m_pModel->SetAnimTime(animTime);
 }
 /*===========================================================================
 描画処理
@@ -130,33 +150,33 @@ void PlayerClass::Draw()
 	// ワールドマトリックスの設定
 	XMStoreFloat4x4(&m_World, mtxWorld);
 
-	CCamera* pCamera = CCamera::Get();
+	/*CCamera* pCamera = CCamera::Get();*/
+	
 	// ---FBXファイル表示---
 	SetBlendState(BS_NONE);			// アルファ処理しない
-	m_pModel->Render(m_World, pCamera->GetView(),
-		pCamera->GetProj(), eOpacityOnly);
+	m_pModel->Draw(GetDeviceContext(), m_World, eOpacityOnly);
 	SetZWrite(false);
 	SetBlendState(BS_ALPHABLEND);	// 半透明描画
-	m_pModel->Render(m_World, pCamera->GetView(),
-		pCamera->GetProj(), eTransparentOnly);
+	m_pModel->Draw(GetDeviceContext(), m_World, eTransparentOnly);
+
 	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
 	//---ボックス表示---
-	if (m_bIsHit) {
-		XMFLOAT4 vRed(1.0f, 0.0f, 0.0f, 0.5f);
-		m_box->SetColor(&vRed);
-	}
-	else {
-		XMFLOAT4 vGreen(0.0f, 1.0f, 0.0f, 0.5f);
-		m_box->SetColor(&vGreen);
-	}
-	m_box->Draw(m_Light);	// 境界ボックス描画
+	//if (m_bIsHit) {
+	//	XMFLOAT4 vRed(1.0f, 0.0f, 0.0f, 0.5f);
+	//	m_box->SetColor(&vRed);
+	//}
+	//else {
+	//	XMFLOAT4 vGreen(0.0f, 1.0f, 0.0f, 0.5f);
+	//	m_box->SetColor(&vGreen);
+	//}
+	//m_box->Draw(m_Light);	// 境界ボックス描画
 	SetCullMode(CULLMODE_CW);	// 前面カリング(表を描かない)
 	SetZWrite(true);
 }
 /*===========================================================================
 座標取得
 ===========================================================================*/
-Vector3f PlayerClass::GetPos()const
+Vector3f& PlayerClass::GetPos()
 {
 	return m_Pos;
 }

@@ -8,14 +8,16 @@
 #define _LIGHT_H_
 
 #include "VectorClass.h"
-#include "FbxModel.h"
 /*===========================================================================
  ライトクラス
 ===========================================================================*/
-class LightClass:public CFbxLight
+class LightClass
 {
 private:
-	
+	Vector4f m_diffuse;
+	Vector4f m_ambient;
+	Vector4f m_specular;
+	Vector3f m_direction;
 public:
 	LightClass();
 	~LightClass();

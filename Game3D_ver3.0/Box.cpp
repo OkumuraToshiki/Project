@@ -187,7 +187,7 @@ void BoxClass::Update()
 /*===========================================================================
    描画処理
 ===========================================================================*/
-void BoxClass::Draw(LightClass& _light)
+void BoxClass::Draw(LightClass* _light)
 {
 
 	// シェーダ設定
@@ -217,10 +217,10 @@ void BoxClass::Draw(LightClass& _light)
 	pDeviceContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer[0]);
 	SHADER_GLOBAL2 cb2;
 	cb2.vEye = XMLoadFloat3(&pCamera->GetEye());
-	cb2.vLightDir = _light.GetDirection();
-	cb2.vLa = XMVECTOR(_light.GetAmbient());
-	cb2.vLd = XMVECTOR(_light.GetDiffuse());
-	cb2.vLs = XMVECTOR(_light.GetSpecular());
+	cb2.vLightDir = _light->GetDirection();
+	cb2.vLa = XMVECTOR(_light->GetAmbient());
+	cb2.vLd = XMVECTOR(_light->GetDiffuse());
+	cb2.vLs = XMVECTOR(_light->GetSpecular());
 	cb2.vDiffuse = XMLoadFloat4(&m_color);
 	cb2.vAmbient = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	cb2.vSpecular = XMVectorSet(1.0f, 1.0f, 1.0f, 1.0f);

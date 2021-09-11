@@ -10,7 +10,7 @@
 ===========================================================================*/
 LightClass::LightClass()
 {
-	SetDirection(Vector3f(0.5f, -1.0f, 0.5f));
+	SetDirection(Vector3f(0.5f, -1.0f, -0.5f));
 	SetDiffuse(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
 	SetAmbient(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
 	SetSpecular(Vector4f(0.2f, 0.2f, 0.2f, 1.0f));

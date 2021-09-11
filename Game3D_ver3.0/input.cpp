@@ -6,6 +6,7 @@
 //=============================================================================
 #include "input.h"
 #include "polygon.h"
+
 //*****************************************************************************
 // マクロ定義
 //*****************************************************************************
@@ -278,6 +279,7 @@ JOYINFOEX *GetJoyState(DWORD dwJoy)
 //=============================================================================
 LONG GetJoyX(DWORD dwJoy)
 {
+	if (g_dwJoyCount == 0)return 0L;
 	if (dwJoy >= NUM_JOY_MAX) return 0L;
 	return (LONG)g_joyState[dwJoy].dwXpos - 0x08000;
 }
@@ -287,6 +289,7 @@ LONG GetJoyX(DWORD dwJoy)
 //=============================================================================
 LONG GetJoyY(DWORD dwJoy)
 {
+	if (g_dwJoyCount == 0)return 0L;
 	if (dwJoy >= NUM_JOY_MAX) return 0L;
 	return (LONG)g_joyState[dwJoy].dwYpos - 0x08000;
 }
@@ -325,6 +328,36 @@ bool GetJoyRelease(DWORD dwJoy, DWORD dwBtn)
 {
 	if (dwJoy >= NUM_JOY_MAX) return false;
 	return (g_dwJoyButtonRelease[dwJoy] & (1 << dwBtn)) ? true : false;
+}
+bool IsPressLeft()
+{
+	if (GetKeyPress(VK_A))return true;
+	return false;
+}
+bool IsPressRight()
+{
+	if (GetKeyPress(VK_D))return true;
+	return false;
+}
+bool IsPressUp()
+{
+	if (GetKeyPress(VK_W))return true;
+	return false;
+}
+bool IsPressDown()
+{
+	if (GetKeyPress(VK_S))return true;
+	return false;
+}
+Vector2f InputPlayerMove()
+{
+	Vector2f fMove(0.0f, 0.0f);
+	if (IsPressRight() || GetJoyX(0) > 0)fMove.x =  1.0f;
+	if (IsPressLeft()  || GetJoyX(0) < 0)fMove.x = -1.0f;
+	if (IsPressUp()    || GetJoyY(0) > 0)fMove.y =  1.0f;
+	if (IsPressDown()  || GetJoyY(0) < 0)fMove.y = -1.0f;
+	fMove.Normalize();
+	return fMove;
 }
 
 //=============================================================================
@@ -375,6 +408,24 @@ XMFLOAT2 GetMousePos(void)
 	mousePos = XMFLOAT2(((float)posMouse->x - (float)SCREEN_CENTER_X), (float)SCREEN_CENTER_Y - (float)posMouse->y);
 
 	return mousePos;
+}
+//=============================================================================
+// ドラッグ距離取得
+//=============================================================================
+XMFLOAT2 GetDragDistance(DWORD dwBtn)
+{
+	XMFLOAT2 Start, End;
+	if (GetMouseTrigger(dwBtn))
+	{
+		Start = GetMousePos();
+		
+	}
+	if (GetMouseButton(dwBtn))
+	{
+		End = GetMousePos();
+		return XMFLOAT2((End.x - Start.x), (End.y - Start.y));
+	}
+	return XMFLOAT2(0, 0);
 }
 
 //=============================================================================

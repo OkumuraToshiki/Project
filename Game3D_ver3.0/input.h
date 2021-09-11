@@ -7,7 +7,7 @@
 #pragma once
 
 #include "main.h"
-
+#include "VectorClass.h"
 //*****************************************************************************
 // É}ÉNÉçíËã`
 //*****************************************************************************
@@ -90,9 +90,17 @@ bool GetJoyButton(DWORD dwJoy, DWORD dwBtn);
 bool GetJoyTrigger(DWORD dwJoy, DWORD dwBtn);
 bool GetJoyRelease(DWORD dwJoy, DWORD dwBtn);
 
+bool IsPressLeft();
+bool IsPressRight();
+bool IsPressUp();
+bool IsPressDown();
+
+Vector2f InputPlayerMove();
+
 POINT *GetMousePosition();
 bool GetMouseButton(DWORD dwBtn);
 bool GetMouseTrigger(DWORD dwBtn);
 bool GetMouseRelease(DWORD dwBtn);
 XMFLOAT2 GetMousePos(void);
 bool IsMouseAreaClick(XMFLOAT2 pos, XMFLOAT2 size, XMFLOAT2 mousePos);
+XMFLOAT2 GetDragDistance(DWORD dwBtn);

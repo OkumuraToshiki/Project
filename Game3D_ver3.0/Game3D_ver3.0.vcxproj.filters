@@ -16,12 +16,6 @@
     <Filter Include="ソース ファイル\hlsl">
       <UniqueIdentifier>{0627359f-021e-47a3-8374-1d28bd2ebf16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Camera">
-      <UniqueIdentifier>{8d3cf222-09c6-49bd-a081-9e39ef2542d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Charactar">
-      <UniqueIdentifier>{ff489ee9-39f8-4b94-b219-fc083ded848f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\UI">
       <UniqueIdentifier>{8e9dcacb-c1be-4927-b5cd-c270d84ff9f2}</UniqueIdentifier>
     </Filter>
@@ -31,26 +25,38 @@
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{bc1b722c-6c66-49bb-8dff-796b3dc20d4c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Camera">
-      <UniqueIdentifier>{2b41bad4-c91e-4a83-a8a1-c1fb5486d5bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Charactar">
-      <UniqueIdentifier>{bf76e94a-9603-4f99-a06d-6059395e62e8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\UI">
       <UniqueIdentifier>{99f6698d-f8b0-4873-8c04-47f65f453a52}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\System">
       <UniqueIdentifier>{d8efae89-706e-4e5b-93a4-eede653f737e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Light">
-      <UniqueIdentifier>{a4e56d0e-b6db-446a-854d-88df8cab3b91}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Light">
-      <UniqueIdentifier>{717c7413-679c-45fb-b5e5-a5aa35900a9f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Scene">
       <UniqueIdentifier>{ca4a05c6-e6ea-46b8-9b07-a4251467508b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object">
+      <UniqueIdentifier>{dfca758c-ae39-4760-8102-a79f713a5f68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Charactar">
+      <UniqueIdentifier>{ff489ee9-39f8-4b94-b219-fc083ded848f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Light">
+      <UniqueIdentifier>{717c7413-679c-45fb-b5e5-a5aa35900a9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Object\Camera">
+      <UniqueIdentifier>{8d3cf222-09c6-49bd-a081-9e39ef2542d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object">
+      <UniqueIdentifier>{cbab5a93-22c3-47cc-ac0a-daa2ea96bbe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Camera">
+      <UniqueIdentifier>{2b41bad4-c91e-4a83-a8a1-c1fb5486d5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Light">
+      <UniqueIdentifier>{a4e56d0e-b6db-446a-854d-88df8cab3b91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Object\Charactar">
+      <UniqueIdentifier>{bf76e94a-9603-4f99-a06d-6059395e62e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,13 +64,7 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>ソース ファイル\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="FbxModel.cpp">
-      <Filter>ソース ファイル\Charactar</Filter>
-    </ClCompile>
-    <ClCompile Include="model.cpp">
-      <Filter>ソース ファイル\Charactar</Filter>
+      <Filter>ソース ファイル\Object\Camera</Filter>
     </ClCompile>
     <ClCompile Include="debugproc.cpp">
       <Filter>ソース ファイル\UI</Filter>
@@ -85,13 +85,13 @@
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\Charactar</Filter>
+      <Filter>ソース ファイル\Object\Charactar</Filter>
     </ClCompile>
     <ClCompile Include="Box.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
     <ClCompile Include="light.cpp">
-      <Filter>ソース ファイル\Light</Filter>
+      <Filter>ソース ファイル\Object\Light</Filter>
     </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
@@ -109,16 +109,28 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="TPCamera.cpp">
-      <Filter>ソース ファイル\Camera</Filter>
+      <Filter>ソース ファイル\Object\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Quaternion.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Charactar</Filter>
+      <Filter>ソース ファイル\Object\Charactar</Filter>
     </ClCompile>
     <ClCompile Include="ResultScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="AssimpModel.cpp">
+      <Filter>ソース ファイル\Object\Charactar</Filter>
+    </ClCompile>
+    <ClCompile Include="InputDebugScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="mesh.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="FieldMesh.cpp">
+      <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -126,13 +138,7 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>ヘッダー ファイル\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="FbxModel.h">
-      <Filter>ヘッダー ファイル\Charactar</Filter>
-    </ClInclude>
-    <ClInclude Include="model.h">
-      <Filter>ヘッダー ファイル\Charactar</Filter>
+      <Filter>ヘッダー ファイル\Object\Camera</Filter>
     </ClInclude>
     <ClInclude Include="debugproc.h">
       <Filter>ヘッダー ファイル\UI</Filter>
@@ -156,7 +162,7 @@
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル\Charactar</Filter>
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
     </ClInclude>
     <ClInclude Include="FileName.hpp">
       <Filter>ヘッダー ファイル</Filter>
@@ -165,7 +171,7 @@
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="light.h">
-      <Filter>ヘッダー ファイル\Light</Filter>
+      <Filter>ヘッダー ファイル\Object\Light</Filter>
     </ClInclude>
     <ClInclude Include="VectorClass.h">
       <Filter>ヘッダー ファイル\System</Filter>
@@ -189,16 +195,28 @@
       <Filter>ヘッダー ファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="TPCamera.h">
-      <Filter>ヘッダー ファイル\Camera</Filter>
+      <Filter>ヘッダー ファイル\Object\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Quaternion.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\Charactar</Filter>
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
     </ClInclude>
     <ClInclude Include="ResultScene.h">
       <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpModel.h">
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="InputDebugScene.h">
+      <Filter>ヘッダー ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="FieldMesh.h">
+      <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -207,12 +225,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="FbxModelPixel.hlsl">
-      <Filter>ソース ファイル\hlsl</Filter>
-    </FxCompile>
-    <FxCompile Include="FbxModelVertex.hlsl">
-      <Filter>ソース ファイル\hlsl</Filter>
-    </FxCompile>
     <FxCompile Include="Pixel2D.hlsl">
       <Filter>ソース ファイル\hlsl</Filter>
     </FxCompile>
@@ -223,6 +235,18 @@
       <Filter>ソース ファイル\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="Vertex.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="AssimpVertex.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="AssimpPixel.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="Vertexmesh.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="Pixelmesh.hlsl">
       <Filter>ソース ファイル\hlsl</Filter>
     </FxCompile>
   </ItemGroup>

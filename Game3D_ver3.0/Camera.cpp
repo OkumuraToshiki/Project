@@ -25,7 +25,7 @@ CCamera::CCamera()
 	m_vLook = Vector3f(0.0f, 0.0f, 0.0f);
 	m_vUp = Vector3f(0.0f, 1.0f, 0.0f);
 	m_fFOVY = XMConvertToRadians(45);
-	m_fAspect = (float)SCREEN_WIDTH / SCREEN_HEIGHT;
+	m_fAspect = (float)(SCREEN_WIDTH / SCREEN_HEIGHT);
 	m_fNearZ = 10.0f;
 	m_fFarZ = 10000.0f;
 	m_vNowEye = m_vEye;
@@ -54,7 +54,7 @@ HRESULT CCamera::Init()
 	m_vLook = Vector3f(0.0f, 0.0f, 0.0f);
 	m_vUp = Vector3f(0.0f, 1.0f, 0.0f);
 	m_fFOVY = XMConvertToRadians(45);
-	m_fAspect = (float)SCREEN_WIDTH / SCREEN_HEIGHT;
+	m_fAspect = (float)(SCREEN_WIDTH / SCREEN_HEIGHT);
 	m_fNearZ = 10.0f;
 	m_fFarZ = 10000.0f;
 	m_vNowEye = m_vEye;
@@ -92,21 +92,65 @@ void CCamera::Update()
 	m_vNowUp.x = m_vNowUp.x * 0.8f + m_vUp.x * 0.2f;
 	m_vNowUp.y = m_vNowUp.y * 0.8f + m_vUp.y * 0.2f;
 	m_vNowUp.z = m_vNowUp.z * 0.8f + m_vUp.z * 0.2f;
-	XMStoreFloat3(&m_vNowUp,
-		XMVector3Normalize(XMLoadFloat3(&m_vNowUp)));
+	//正規化
+	m_vNowUp.Normalize();
+	
 	// ビュー変換更新
 	XMStoreFloat4x4(&m_mView, XMMatrixLookAtLH(
-		XMLoadFloat3(&m_vNowEye),
-		XMLoadFloat3(&m_vNowLook),
-		XMLoadFloat3(&m_vNowUp)));
+		XMVECTOR(m_vNowEye),
+		XMVECTOR(m_vNowLook),
+		XMVECTOR(m_vNowUp)));
 	// 射影変換更新
 	XMStoreFloat4x4(&m_mProj,
 		XMMatrixPerspectiveFovLH(m_fFOVY, m_fAspect,
 			m_fNearZ, m_fFarZ));
 
+	//視錘台設定
+	SetFrustum();
 
-	PrintDebugProc("ｼﾃﾝ:%f %f %f\n", m_vEye.x, m_vEye.y, m_vEye.z);
-}/*===========================================================================
+	PrintDebugProc("Eye:%f %f %f\n", m_vEye.x, m_vEye.y, m_vEye.z);
+	PrintDebugProc("Look:%f %f %f\n", m_vLook.x, m_vLook.y, m_vLook.z);
+	PrintDebugProc("Up:%f %f %f\n", m_vUp.x, m_vUp.y, m_vUp.z);
+}
+/*===========================================================================
+   視錘台設定
+===========================================================================*/
+void CCamera::SetFrustum()
+{
+	//視錘台の上下左右の法線ベクトルを求める
+	XMFLOAT4 m_frus[6];//視錘台 0上 1下 2左 3右 4前 5後
+	float fTan = tanf(XMConvertToRadians(m_fFOVY*0.5f));
+	//上下
+	m_frus[0] = XMFLOAT4(0, -1.0f, fTan, 0.0f);
+	m_frus[1] = XMFLOAT4(0.0f, 1.0f, fTan, 0.0f);
+	//左右
+	fTan *= m_fAspect;//アスペクト比をかける
+	m_frus[2] = XMFLOAT4(1.0f, 0.0f, fTan, 0.0f);
+	m_frus[3] = XMFLOAT4(-1.0f, 0.0f, fTan, 0.0f);
+	//前後
+	m_frus[4] = XMFLOAT4(0.0f, 0.0f, 1.0, -m_fNearZ);
+	m_frus[5] = XMFLOAT4(0.0f, 0.0f, -1.0f, m_fFarZ);
+
+	//正規化
+	for (int i = 0; i < 4; ++i)
+	{
+		XMStoreFloat4(&m_frus[i],
+			XMPlaneNormalize(XMLoadFloat4(&m_frus[i])));
+	}
+	//カメラの移動に伴い、視錘台をワールド変換
+	XMMATRIX mW;
+	mW = GetMatrix();
+	//平面をワールド空間に配置
+	mW = XMMatrixInverse(nullptr, mW);
+	mW = XMMatrixTranspose(mW);
+	for (int i = 0; i < 6; ++i)
+	{
+		XMStoreFloat4(&m_frusW[i],
+			XMPlaneTransform(//※ワールドマトリックスは、逆行列の転置行列を渡す
+				XMLoadFloat4(&m_frus[i]), mW));
+	}
+}
+/*===========================================================================
     //視錘台との交差判定  (境界球使用)
     //引数　pCenter->モデルの中心、fRadius->モデルの半径
 	//戻り値 0非表示 1部分表示 2表示
@@ -130,55 +174,57 @@ int CCamera::CollisionViewFrustum(Vector3f* pCenter, float fRadius)
 	return 1;//完全に内側
 }
 /*===========================================================================
-  
+  カメラのワールド変換行列を求める
 ===========================================================================*/
-XMMATRIX CCamera::GetCameraMatrix(Vector3f vLook, Vector3f vEye,Vector3f vUp)
+XMMATRIX CCamera::GetMatrix()
 {
 	Vector3f forward, right, up;
-	XMVECTOR vF, vR, vU;
 	XMFLOAT4X4 world;
 	XMMATRIX mW = XMMatrixIdentity();
 	//カメラZ軸を求める
-	forward.x = vLook.x - vEye.x;
-	forward.y = vLook.y - vEye.y;
-	forward.z = vLook.z - vEye.z;
-
-	vF = XMLoadFloat3(&forward);
-	vF = XMVector3Normalize(vF);
-	XMStoreFloat3(&forward, vF);
-
+	forward = GetAxisZ();
 	//カメラX軸を求める
-	vU = XMLoadFloat3(&vUp);
-	vR = XMVector3Cross(vU, vF);
-	vR = XMVector3Normalize(vR);
-	XMStoreFloat3(&right, vR);
+	right = m_vNowUp.Cross(forward);
+	right.Normalize();
 
 	//カメラY軸を求める
-	vU = XMVector3Cross(vF, vR);
-	vU = XMVector3Normalize(vU);
-	XMStoreFloat3(&up, vU);
+	up = forward.Cross(right);
+	up.Normalize();
 
-	//カメラのワールド変換マトリックスを求める
+	//マトリックスを求める
 	world._11 = right.x;
 	world._12 = right.y;
 	world._13 = right.z;
 	world._14 = 0.0f;
+
 	world._21 = up.x;
 	world._22 = up.y;
 	world._23 = up.z;
 	world._24 = 0.0f;
+
 	world._31 = forward.x;
 	world._32 = forward.y;
 	world._33 = forward.z;
 	world._34 = 0.0f;
 
-	world._41 = vEye.x;
-	world._42 = vEye.y;
-	world._43 = vEye.z;
+	world._41 = m_vEye.x;
+	world._42 = m_vEye.y;
+	world._43 = m_vEye.z;
 	world._44 = 1.0f;
 
 	mW = XMLoadFloat4x4(&world);
 	return mW;
+}
+/*===========================================================================
+   //カメラのZ軸を求める
+===========================================================================*/
+Vector3f CCamera::GetAxisZ()
+{
+	Vector3f forward;
+	//カメラZ軸を求める
+	forward = m_vNowLook - m_vNowEye;
+	forward.Normalize();
+	return forward;
 }
 /*===========================================================================
    //逆射影行列計算
@@ -193,10 +239,9 @@ Vector3f CCamera::UnProjection(const Vector3f& screenP)
 	XMMATRIX   mtxUnpro;
 	//XMFLOAT4X4 unproject;
 	mtxUnpro = XMLoadFloat4x4(&m_mView) * XMLoadFloat4x4(&m_mProj);
-	XMMatrixInverse(&XMLoadFloat3(&vDev), mtxUnpro);
+	XMMatrixInverse(&XMVECTOR(vDev), mtxUnpro);
 	//正規化
-	XMVECTOR xmv = XMVector3Normalize(XMLoadFloat3(&vDev));
-	XMStoreFloat3(&vDev, xmv);
+	vDev.Normalize();
 	return vDev;
 }
 /*===========================================================================
@@ -216,21 +261,5 @@ void CCamera::GetScreenDirection(Vector3f& Start, Vector3f& Dir)
 	Dir.y = vE.y - Start.y;
 	Dir.z = vE.z - Start.z;
 	//正規化
-	XMVECTOR xmv = XMVector3Normalize(XMLoadFloat3(&Dir));
-	XMStoreFloat3(&Dir, xmv);
-}
-/*===========================================================================
-  //方向ベクトル
-===========================================================================*/
-Vector3f CCamera::FPVector()
-{
-
-	XMVECTOR vVec = XMVectorSet(m_vNowLook.x - m_vNowEye.x,
-		m_vNowLook.y - m_vNowEye.y,
-		m_vNowLook.z - m_vNowEye.z, 0.0f);
-	vVec = XMVector3Normalize(vVec);
-	Vector3f vDir;
-	XMStoreFloat3(&vDir, vVec);
-	PrintDebugProc("ﾍﾞｸﾀｰ:%f,%f,%f\n", vDir.x, vDir.y, vDir.z);
-	return vDir;
+	Dir.Normalize();
 }
