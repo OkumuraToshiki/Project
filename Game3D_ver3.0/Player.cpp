@@ -123,8 +123,6 @@ void PlayerClass::Update()
 		m_vPosBBox.x, m_vPosBBox.y, m_vPosBBox.z));
 	m_box->SetWorld(matrix);
 
-	m_pModel->SetCamera(CCamera::Get());
-	m_pModel->SetLight(m_Light);
 	m_pModel->SetAnimIndex(0);
 	if (GetKeyTrigger(VK_Q)) {
 		animTime++;
@@ -150,8 +148,8 @@ void PlayerClass::Draw()
 	// ワールドマトリックスの設定
 	XMStoreFloat4x4(&m_World, mtxWorld);
 
-	/*CCamera* pCamera = CCamera::Get();*/
-	
+	m_pModel->SetCamera(CCamera::Get());
+	m_pModel->SetLight(m_Light);
 	// ---FBXファイル表示---
 	SetBlendState(BS_NONE);			// アルファ処理しない
 	m_pModel->Draw(GetDeviceContext(), m_World, eOpacityOnly);

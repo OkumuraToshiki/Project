@@ -8,15 +8,18 @@
 #define _FIELDMESH_H_
 
 #include "mesh.h"
+class LightClass;
 class FieldMeshClass
 {
 private:
 	MESH   m_Mesh;
-	HRESULT MakeVertexField();
+	
 public:
 	FieldMeshClass();
 	~FieldMeshClass();
-
-	void Draw();
+	void Update();
+	void Draw(LightClass* plight);
+private:
+	HRESULT MakeVertexField();
 };
 #endif // !_FIELDMESH_H_

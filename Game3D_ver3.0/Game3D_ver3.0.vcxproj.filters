@@ -132,6 +132,9 @@
     <ClCompile Include="FieldMesh.cpp">
       <Filter>ソース ファイル\Object</Filter>
     </ClCompile>
+    <ClCompile Include="DrawBuffer.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -217,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="FieldMesh.h">
       <Filter>ヘッダー ファイル\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CharactarBase.h">
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawBuffer.h">
+      <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

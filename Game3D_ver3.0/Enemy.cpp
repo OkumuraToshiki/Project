@@ -44,7 +44,7 @@ HRESULT EnemyClass::Init()
 	if (m_nRef == 0) {
 		SAFE_DELETE(m_pModel);
 		m_pModel = new CAssimpModel();
-		if (!m_pModel->Load(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_KNIGHT]))
+		if (!m_pModel->Load(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_ENEMY]))
 		{
 			hr = E_FAIL;
 			MessageBoxA(GetMainWnd(), "モデルデータ読込エラー", "EnemyModel", MB_OK | MB_ICONEXCLAMATION);
@@ -114,17 +114,14 @@ void EnemyClass::Draw()
 	mtxWorld = XMMatrixMultiply(mtxWorld, mtxTranslate);
 	// ワールドマトリックスの設定
 	XMStoreFloat4x4(&m_World, mtxWorld);
-
-	CCamera* pCamera = CCamera::Get();
+	m_pModel->SetCamera(CCamera::Get());
+	m_pModel->SetLight(m_Light);
 	// ---FBXファイル表示---
 	m_pModel->Draw(GetDeviceContext(), m_World);
 	//SetBlendState(BS_NONE);			// アルファ処理しない
-	//m_pModel->Render(m_World, pCamera->GetView(),
-	//	pCamera->GetProj(), eOpacityOnly);
 	//SetZWrite(false);
 	//SetBlendState(BS_ALPHABLEND);	// 半透明描画
-	//m_pModel->Render(m_World, pCamera->GetView(),
-	//	pCamera->GetProj(), eTransparentOnly);
+	// eTransparentOnly);
 	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
 	//---ボックス表示---
 	if (m_bIsHit) {

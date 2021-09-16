@@ -35,5 +35,5 @@ static LPCSTR pszModelPath[MODEL_MAX] = {
 	"data/model/sky/sky.fbx"
 };
 static LPCSTR pszTexPath[TEXTURE_MAX] = {
-	"data/texture/bullet000.jpg"
+	"data/texture/bullet000.png"
 };

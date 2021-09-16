@@ -17,17 +17,17 @@ class CAssimpModel;
 class EnemyClass
 {
 private:
-	Vector3f  m_Pos;
-	Vector3f  m_Move;
-	Vector3f  m_Rot;
-	Vector3f  m_Size;
+	Vector3f   m_Pos;
+	Vector3f   m_Move;
+	Vector3f   m_Rot;
+	Vector3f   m_Size;
 	XMFLOAT4X4 m_World;
 
 	static CAssimpModel*    m_pModel;
 	static Vector3f         m_vCenter;     // 境界ボックス中心座標
 	static Vector3f         m_vBBox;       // 境界ボックス サイズ
 	static int              m_nRef;        //参照カウンタ
-	LightClass*              m_Light;
+	LightClass*             m_Light;
 	BoxClass*               m_box;         // 境界ボックス表示
 	Vector3f                m_vPosBBox;    // 境界ボックス中心座標(ワールド空間)
 	bool                    m_bCanJump;

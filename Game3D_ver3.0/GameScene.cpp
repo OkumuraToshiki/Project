@@ -6,6 +6,7 @@
 ===========================================================================*/
 #include "GameScene.h"
 #include "TPCamera.h"
+#include "FieldMesh.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "light.h"
@@ -16,9 +17,10 @@ class ResultScene;
 ===========================================================================*/
 GameScene::GameScene()
 {
-	m_Light = new LightClass();
-	m_pPlayer = new PlayerClass(Vector3f(0, 0, 0), m_Light);
-	m_pEnemy = new EnemyClass(Vector3f(-50, 0, 200), m_Light);
+	m_pLight = new LightClass();
+	m_pField = new FieldMeshClass();
+	m_pPlayer = new PlayerClass(Vector3f(0, 0, 0), m_pLight);
+	m_pEnemy = new EnemyClass(Vector3f(-50, 0, 200), m_pLight);
 	m_pTPcamera = new TPCamera(&m_pPlayer->GetPos(),&m_pPlayer->GetWorld());
 	CCamera::Set(m_pTPcamera);
 }
@@ -29,6 +31,7 @@ GameScene::~GameScene()
 {
 	SAFE_DELETE(m_pEnemy);
 	SAFE_DELETE(m_pPlayer);
+	SAFE_DELETE(m_pField);
 	SAFE_DELETE(m_pTPcamera);
 }
 /*===========================================================================
@@ -48,6 +51,7 @@ void GameScene::Uninit()
 ===========================================================================*/
 BaseScene* GameScene::Update()
 {
+	m_pField->Update();
 	m_pPlayer->Update();
 	m_pEnemy->Update();
 	if (GetKeyTrigger(VK_RETURN))
@@ -61,8 +65,10 @@ BaseScene* GameScene::Update()
 ===========================================================================*/
 void GameScene::Draw() const
 {
+	SetCullMode(CULLMODE_CCW);
+	m_pField->Draw(m_pLight);
 	Set3DMode();
-	//m_pEnemy->Draw();
+	m_pEnemy->Draw();
 	m_pPlayer->Draw();
 	
 }

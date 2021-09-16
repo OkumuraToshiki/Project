@@ -113,6 +113,40 @@ void CCamera::Update()
 	PrintDebugProc("Up:%f %f %f\n", m_vUp.x, m_vUp.y, m_vUp.z);
 }
 /*===========================================================================
+    //視錘台との交差判定  (境界球使用)
+    //引数　pCenter->モデルの中心、fRadius->モデルの半径
+	//戻り値 0非表示 1部分表示 2表示
+===========================================================================*/
+int CCamera::CollisionViewFrustum(Vector3f* pCenter, float fRadius)
+{
+	bool bHit = false;
+	XMVECTOR frusw, center, dot;
+
+	float fDot;
+	center = XMLoadFloat3(pCenter);
+	for (int i = 0; i < 6; ++i)
+	{
+		frusw = XMLoadFloat4(&m_frusW[i]);
+		dot = XMPlaneDotCoord(frusw, center);
+		XMStoreFloat(&fDot, dot);
+		if (fDot < -fRadius)return 0;//完全に外
+		if (fDot <= fRadius)bHit = true;
+	}
+	if (bHit) return-1;//面を跨ぐ
+	return 1;//完全に内側
+}
+/*===========================================================================
+   //カメラのZ軸を求める
+===========================================================================*/
+Vector3f CCamera::GetAxisZ()
+{
+	Vector3f forward;
+	//カメラZ軸を求める
+	forward = m_vNowLook - m_vNowEye;
+	forward.Normalize();
+	return forward;
+}
+/*===========================================================================
    視錘台設定
 ===========================================================================*/
 void CCamera::SetFrustum()
@@ -149,29 +183,6 @@ void CCamera::SetFrustum()
 			XMPlaneTransform(//※ワールドマトリックスは、逆行列の転置行列を渡す
 				XMLoadFloat4(&m_frus[i]), mW));
 	}
-}
-/*===========================================================================
-    //視錘台との交差判定  (境界球使用)
-    //引数　pCenter->モデルの中心、fRadius->モデルの半径
-	//戻り値 0非表示 1部分表示 2表示
-===========================================================================*/
-int CCamera::CollisionViewFrustum(Vector3f* pCenter, float fRadius)
-{
-	bool bHit = false;
-	XMVECTOR frusw, center, dot;
-
-	float fDot;
-	center = XMLoadFloat3(pCenter);
-	for (int i = 0; i < 6; ++i)
-	{
-		frusw = XMLoadFloat4(&m_frusW[i]);
-		dot = XMPlaneDotCoord(frusw, center);
-		XMStoreFloat(&fDot, dot);
-		if (fDot < -fRadius)return 0;//完全に外
-		if (fDot <= fRadius)bHit = true;
-	}
-	if (bHit) return-1;//面を跨ぐ
-	return 1;//完全に内側
 }
 /*===========================================================================
   カメラのワールド変換行列を求める
@@ -215,17 +226,7 @@ XMMATRIX CCamera::GetMatrix()
 	mW = XMLoadFloat4x4(&world);
 	return mW;
 }
-/*===========================================================================
-   //カメラのZ軸を求める
-===========================================================================*/
-Vector3f CCamera::GetAxisZ()
-{
-	Vector3f forward;
-	//カメラZ軸を求める
-	forward = m_vNowLook - m_vNowEye;
-	forward.Normalize();
-	return forward;
-}
+
 /*===========================================================================
    //逆射影行列計算
 ===========================================================================*/

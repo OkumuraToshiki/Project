@@ -26,13 +26,13 @@ private:
 	XMFLOAT4X4 m_World;
 
 	CAssimpModel*    m_pModel;
-	LightClass*    m_Light;
-	Vector3f      m_vCenter;     // 境界ボックス中心座標
-	Vector3f      m_vBBox;       // 境界ボックス サイズ
-	BoxClass*      m_box;         // 境界ボックス表示
-	Vector3f      m_vPosBBox;    // 境界ボックス中心座標(ワールド空間)
-	bool          m_bCanJump;
-	bool          m_bIsHit;
+	LightClass*      m_Light;
+	Vector3f         m_vCenter;     // 境界ボックス中心座標
+	Vector3f         m_vBBox;       // 境界ボックス サイズ
+	BoxClass*        m_box;         // 境界ボックス表示
+	Vector3f         m_vPosBBox;    // 境界ボックス中心座標(ワールド空間)
+	bool             m_bCanJump;
+	bool             m_bIsHit;
 	
 	float animTime;
 public:

@@ -40,10 +40,7 @@ public:
 	Vector3f& GetEye() { return m_vEye; }
 	Vector3f& GetLook() { return m_vLook; }
 	void SetLook(Vector3f vLook) { m_vLook = vLook; }
-	static void Set(CCamera* pCamera)
-	{
-		m_pCamera = pCamera;
-	}
+	static void Set(CCamera* pCamera) { m_pCamera = pCamera; }
 	static CCamera* Get() { return m_pCamera; }
 	int CollisionViewFrustum(Vector3f* pCenter, float fRadius);
 	Vector3f GetAxisZ();

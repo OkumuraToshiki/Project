@@ -23,26 +23,38 @@ FieldMeshClass::FieldMeshClass()
 {
 	HRESULT hr;
 	// 位置、向きの初期設定
-	m_Mesh.pos = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Mesh.pos = XMFLOAT3(0.0f, -0.2f, 0.0f);
 	m_Mesh.rot = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	m_Mesh.primitiveType = PT_TRIANGLESTRIP;
 	// テクスチャの読み込み
 	hr = CreateTextureFromFile(GetDevice(),
 		pszTexPath[TEXTURE_FIELD],
 		&m_Mesh.pTexture);
 	if (FAILED(hr))MessageBox(GetMainWnd(), "Textureエラー", "FieldMesh", MB_OK | MB_ICONEXCLAMATION);
 	XMStoreFloat4x4(&m_Mesh.mtxTexture, XMMatrixIdentity());
+	hr = MakeVertexField();
+	if (FAILED(hr))MessageBox(GetMainWnd(), "頂点生成エラー", "FieldMesh", MB_OK | MB_ICONEXCLAMATION);
 }
 /*===========================================================================
   デストラクタ
 ===========================================================================*/
 FieldMeshClass::~FieldMeshClass()
 {
+	ReleaseMesh(&m_Mesh);
+}
+/*===========================================================================
+  更新
+===========================================================================*/
+void FieldMeshClass::Update()
+{
+	UpdateMesh(&m_Mesh);
 }
 /*===========================================================================
   描画
 ===========================================================================*/
-void FieldMeshClass::Draw()
+void FieldMeshClass::Draw(LightClass* pLight)
 {
+	DrawMesh(GetDeviceContext(), &m_Mesh, pLight);
 }
 /*===========================================================================
   頂点の作成

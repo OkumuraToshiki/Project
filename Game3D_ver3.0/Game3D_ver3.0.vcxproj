@@ -131,7 +131,9 @@
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CharactarBase.h" />
     <ClInclude Include="debugproc.h" />
+    <ClInclude Include="DrawBuffer.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="FieldMesh.h" />
     <ClInclude Include="FileName.hpp" />
@@ -161,6 +163,7 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="debugproc.cpp" />
+    <ClCompile Include="DrawBuffer.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="FieldMesh.cpp" />

@@ -181,11 +181,11 @@ void DrawMesh(ID3D11DeviceContext* pDeviceContext, MESH* pMesh,LightClass*  pLig
 	pDeviceContext->VSSetConstantBuffers(0, 1, &g_pConstantBuffer[0]);
 	SHADER_MESH_GLOBAL2 cb2;
 	cb2.vEye = CCamera::Get()->GetEye();
-	LightClass& g_light = *pLight;
-	cb2.vLightDir = g_light.GetDirection();
-	cb2.vLa = g_light.GetAmbient();
-	cb2.vLd = g_light.GetDiffuse();
-	cb2.vLs = g_light.GetSpecular();
+	
+	cb2.vLightDir = pLight->GetDirection();
+	cb2.vLa = pLight->GetAmbient();
+	cb2.vLd = pLight->GetDiffuse();
+	cb2.vLs = pLight->GetSpecular();
 	MATERIAL* pMaterial = pMesh->pMaterial;
 	if (!pMaterial) pMaterial = &g_material;
 	cb2.vDiffuse = XMLoadFloat4(&pMaterial->Diffuse);

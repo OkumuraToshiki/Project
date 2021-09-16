@@ -33,7 +33,7 @@ BaseScene* SceneManager::Update()
 	m_pFade->Update();
 
 	if (pCurrentScene != m_pScene) {
-		m_pFade->SetFadeout(1.0f);
+		m_pFade->SetFadeIn(1.0f);
 
 		delete m_pScene;
 		m_pScene = pCurrentScene;

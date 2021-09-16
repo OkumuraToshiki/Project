@@ -10,9 +10,7 @@
 #include "polygon.h"
 #include "debugproc.h"
 #include "Camera.h"
-#include "Menu.h"
-#include "light.h"
-#include "Player.h"
+#include "mesh.h"
 #include "SceneManager.h"
 
 //-------- ライブラリのリンク
@@ -55,9 +53,6 @@ D3D11_VIEWPORT vp;
 int							g_nCountFPS;			// FPSカウンタ
 
 CCamera                     g_Camera;
-LightClass                  g_MainLight;
-PlayerClass*                g_pPlayer;
-CTitle                      g_Title;
 SceneManager*               g_pSceneMgr;
 //=============================================================================
 // メイン関数
@@ -381,12 +376,6 @@ HRESULT Init(HWND hWnd, BOOL bWindow)
 	//カメラ
 	hr = g_Camera.Init();
 	CCamera::Set(&g_Camera);
-
-	//メインライト
-	/*g_MainLight.SetDirection(Vector3f(0.5f, -1.0f, 0.5f));
-	g_MainLight.SetDiffuse(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
-	g_MainLight.SetAmbient(Vector4f(1.0f, 1.0f, 1.0f, 1.0f));
-	g_MainLight.SetSpecular(Vector4f(0.2f, 0.2f, 0.2f, 1.0f));*/
 	
 	// ポリゴン表示初期化
 	hr = InitPolygon(g_pDevice);
@@ -405,6 +394,13 @@ HRESULT Init(HWND hWnd, BOOL bWindow)
 	// Assimp用シェーダ初期化
 	if (!CAssimpModel::InitShader(g_pDevice))
 		return E_FAIL;
+	//Mesh初期化
+	hr = InitMesh();
+	if (FAILED(hr)) {
+		MessageBox(g_hWnd, _T("メッシュ初期化に失敗しました。"),
+			WINDOW_NAME, MB_OK);
+		return hr;
+	}
 	//シーンマネージャー生成
 	g_pSceneMgr = new SceneManager();
 	return hr;
@@ -430,6 +426,9 @@ void Uninit(void)
 {
 	//シーンマネージャー削除
 	SAFE_DELETE(g_pSceneMgr);
+
+	//Mesh終了処理
+	UninitMesh();
 
 	// Assimp用シェーダ終了処理
 	CAssimpModel::UninitShader();

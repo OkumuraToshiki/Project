@@ -8,6 +8,7 @@
 #define _GAMESCENE_H_
 #include "BaseScene.h"
 class TPCamera;
+class FieldMeshClass;
 class PlayerClass;
 class EnemyClass;
 class LightClass;
@@ -18,9 +19,10 @@ class GameScene :public BaseScene
 {
 private:
 	TPCamera*     m_pTPcamera;
+	FieldMeshClass* m_pField;
 	PlayerClass*  m_pPlayer;
 	EnemyClass*   m_pEnemy;
-	LightClass*    m_Light;
+	LightClass*   m_pLight;
 public:
 	GameScene();
 	~GameScene();
