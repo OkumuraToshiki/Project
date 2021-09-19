@@ -28,7 +28,7 @@ SceneManager::~SceneManager()
 ===========================================================================*/
 BaseScene* SceneManager::Update()
 {
-	PrintDebugProc("%s\n", m_pScene->GetSceneName());
+	PrintDebugProc("%s\n", m_pScene->GetSceneName().c_str());
 	BaseScene* pCurrentScene = m_pScene->Update();
 	m_pFade->Update();
 

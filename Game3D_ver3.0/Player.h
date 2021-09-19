@@ -8,6 +8,7 @@
 #define _PLAYER_H_
 
 #include "main.h"
+#include "BaseCharactar.h"
 #include "Quaternion.h"
 #include "Box.h"
 #include "light.h"
@@ -16,7 +17,7 @@ class CAssimpModel;
 /*===========================================================================
    プレイヤークラス
 ===========================================================================*/
-class PlayerClass
+class PlayerClass:public BaseCharactar
 {
 private:
 	Vector3f  m_Pos;
@@ -41,10 +42,12 @@ public:
 	~PlayerClass();
 	HRESULT Init();
 	void    Uninit();
-	void    Update();
-	void    Draw();
+	void    Update()override;
+	void    Draw()override;
+	std::string GetName()override;
 	Vector3f& GetPos();
 	XMFLOAT4X4& GetWorld();
+	
 private:
 	bool canJump();
 };

@@ -87,8 +87,8 @@
       <SDLCheck>false</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>C:\Users\t_o03\Desktop\作品・知見\Game3D_ver3.0\Game3D_ver3.0\DirectXTex;C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\FBX SDK\2020.0.1\include;C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\DirectXTex;C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\FBX SDK\2020.0.1\include;C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\DirectXTex\x64\Debug;C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\FBX SDK\2020.0.1\lib\vs2017\x64\debug;C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\Assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -125,14 +125,18 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\DirectXTex\x64\Release;C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\FBX SDK\2020.0.1\lib\vs2017\x64\release;C:\Users\t_o03\Desktop\作品・知見\3DGame\Game3D_ver3.0\Assimp\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AssimpModel.h" />
     <ClInclude Include="BaseScene.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="CharactarBase.h" />
+    <ClInclude Include="BaseCharactar.h" />
     <ClInclude Include="debugproc.h" />
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="DrawBuffer.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="FieldMesh.h" />
@@ -143,6 +147,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="InputDebugScene.h" />
     <ClInclude Include="light.h" />
+    <ClInclude Include="ShaderResource.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="mesh.h" />
@@ -157,6 +162,7 @@
     <ClInclude Include="ShaderBuffer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="ToonPS.h" />
     <ClInclude Include="TPCamera.h" />
     <ClInclude Include="VectorClass.h" />
   </ItemGroup>
@@ -174,6 +180,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="InputDebugScene.cpp" />
     <ClCompile Include="light.cpp" />
+    <ClCompile Include="ShaderResource.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="mesh.cpp" />
@@ -229,6 +236,26 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)data\shader\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)data\shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="TexturePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)data\shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)data\shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="TextureVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)data\shader\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)data\shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>

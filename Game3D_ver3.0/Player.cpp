@@ -56,20 +56,15 @@ HRESULT PlayerClass::Init()
 		m_vCenter = m_pModel->GetCenter();
 		m_vBBox = m_pModel->GetBBox();
 		m_vBBox *= m_Size;
-		
-		/*{
-			TCHAR szMsg[256];
-			_stprintf_s(szMsg, 256, _T("m_vBBox={%f, %f, %f}"),
-				m_pModel->GetBBox().x, m_vBBox.y, m_vBBox.z);
-			MessageBox(GetMainWnd(), szMsg, _T("確認"), MB_OK);
-		}*/
 	}
 	hr = m_box->Init(&m_vBBox);
+	m_vPosBBox = m_vCenter;
+#ifdef _DEBUG
 	if (FAILED(hr))
 	{
 		MessageBox(GetMainWnd(), "Boxエラー", _T("OK"), MB_OK);
 	}
-	m_vPosBBox = m_vCenter;
+#endif // _DEBUG
 	return hr;
 }
 /*===========================================================================
@@ -170,6 +165,13 @@ void PlayerClass::Draw()
 	//m_box->Draw(m_Light);	// 境界ボックス描画
 	SetCullMode(CULLMODE_CW);	// 前面カリング(表を描かない)
 	SetZWrite(true);
+}
+/*===========================================================================
+クラス名取得
+===========================================================================*/
+std::string PlayerClass::GetName()
+{
+	return "Player";
 }
 /*===========================================================================
 座標取得

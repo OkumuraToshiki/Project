@@ -6,7 +6,7 @@
 ===========================================================================*/
 #ifndef _SHADERBUFFER_H_
 #define _SHADERBUFFER_H_
-
+#include "main.h"
 #include "ShaderBase.h"
 template <class T>
 class MakeShaderBuffer
@@ -16,11 +16,11 @@ private:
 	T m_data;
 public:
 	//コンストラクタ
-	ShaderBufferTemplate(){
+	MakeShaderBuffer(){
 		m_buf.Create(sizeof(T));
 	}
 	//デストラクタ
-	virtual ~ShaderBufferTemplate() {  }
+	virtual ~MakeShaderBuffer() {  }
 
 	T* operator->() { return &m_data; }
 	const T& operator=(const T& obj) { return m_data = obj; }

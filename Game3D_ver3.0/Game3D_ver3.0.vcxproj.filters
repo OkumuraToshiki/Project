@@ -138,6 +138,9 @@
     <ClCompile Include="ShaderBase.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderResource.cpp">
+      <Filter>ソース ファイル\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -224,9 +227,6 @@
     <ClInclude Include="FieldMesh.h">
       <Filter>ヘッダー ファイル\Object</Filter>
     </ClInclude>
-    <ClInclude Include="CharactarBase.h">
-      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
-    </ClInclude>
     <ClInclude Include="DrawBuffer.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
@@ -235,6 +235,18 @@
     </ClInclude>
     <ClInclude Include="ShaderBuffer.h">
       <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderResource.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>ヘッダー ファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="ToonPS.h">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCharactar.h">
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +277,12 @@
       <Filter>ソース ファイル\hlsl</Filter>
     </FxCompile>
     <FxCompile Include="Pixelmesh.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="TextureVS.hlsl">
+      <Filter>ソース ファイル\hlsl</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturePS.hlsl">
       <Filter>ソース ファイル\hlsl</Filter>
     </FxCompile>
   </ItemGroup>

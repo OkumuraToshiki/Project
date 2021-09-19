@@ -41,7 +41,6 @@ using namespace DirectX;
 #define	NUM_VERTEX		(4)					// 頂点数
 #define	NUM_POLYGON		(2)					// ポリゴン数
 #define RAD(x)          (XM_PI*x/180.0f)
-#define _DEBUG_          (0)
 //*****************************************************************************
 // 構造体定義
 //*****************************************************************************
@@ -72,9 +71,9 @@ typedef struct {
 // 頂点フォーマット( 頂点座標[3D] / 法線ベクトル / 反射光 / テクスチャ座標 )
 typedef struct {
 	XMFLOAT3 vtx;		// 頂点座標
+	XMFLOAT2 tex;		// テクスチャ座標
 	XMFLOAT3 nrm;		// 法線ベクトル
 	XMFLOAT4 diffuse;	// 拡散反射光
-	XMFLOAT2 tex;		// テクスチャ座標
 } VERTEX_3D;
 
 //*****************************************************************************
@@ -97,3 +96,4 @@ void Stop_Min(int nVal, int Min);
 void LoopPlus(int& ,int );
 //値ループ(マイナス)
 void LoopMinus(int& ,int );
+void ActivateConsole();

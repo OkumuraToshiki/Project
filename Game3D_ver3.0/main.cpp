@@ -4,6 +4,8 @@
 // Author : HIROHIKO HAMAYA
 //
 //=============================================================================
+#include <io.h>
+#include <fcntl.h>
 #include "main.h"
 #include "AssimpModel.h"
 #include "input.h"
@@ -83,6 +85,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdL
 	};
 	MSG msg;
 	
+#if 0
+	ActivateConsole();
+#endif
 	// COM初期化
 	if (FAILED(CoInitializeEx(nullptr, COINIT_MULTITHREADED))) {
 		MessageBoxW(NULL, L"COMの初期化に失敗しました。", L"error", MB_OK);
@@ -515,7 +520,7 @@ void Draw(void)
 	
 	//２D表示
 	Set2DMode();
-#if _DEBUG_
+#ifdef _DEBUG
 	// デバッグ文字列表示
 	SetPolygonColor(1.0f, 1.0f, 1.0f);
 	DrawDebugProc();
@@ -633,7 +638,15 @@ void LoopMinus(int &nVal, int nMaxCnt)
 	nVal = (nVal + nMaxCnt - 1) % nMaxCnt;
 }
 
-//void MyMessageBox(LPCSTR lpCaption)
-//{
-//	MessageBox(g_hWnd,)
-//}
+void ActivateConsole()
+{
+	AllocConsole();
+	HANDLE stdHandle;
+	int hConsole;
+	FILE* fp;
+	stdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	hConsole = _open_osfhandle((long)stdHandle, _O_TEXT);
+	fp = _fdopen(hConsole, "w");
+	freopen_s(&fp, "CONOUT$", "w", stdout);
+	printf("こんにちは！コンソールはONです！\n");
+}

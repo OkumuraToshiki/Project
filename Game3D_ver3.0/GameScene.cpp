@@ -15,7 +15,7 @@ class ResultScene;
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-GameScene::GameScene()
+GameScene::GameScene() :m_pLight(nullptr),m_pField(nullptr),m_pPlayer(nullptr),m_pEnemy(nullptr),m_pTPcamera(nullptr)
 {
 	m_pLight = new LightClass();
 	m_pField = new FieldMeshClass();
@@ -29,9 +29,10 @@ GameScene::GameScene()
 ===========================================================================*/
 GameScene::~GameScene()
 {
+	SAFE_DELETE(m_pField);
 	SAFE_DELETE(m_pEnemy);
 	SAFE_DELETE(m_pPlayer);
-	SAFE_DELETE(m_pField);
+	SAFE_DELETE(m_pLight);
 	SAFE_DELETE(m_pTPcamera);
 }
 /*===========================================================================

@@ -13,28 +13,15 @@
    静的メンバ変数
 ===========================================================================*/
 CCamera* CCamera::m_pCamera = nullptr;
-Vector3f CCamera::m_vNowEye;	// 現在の視点
-Vector3f CCamera::m_vNowLook;	// 現在の注視点
-Vector3f CCamera::m_vNowUp;		// 現在の上方ベクトル
+Vector3f CCamera::m_vNowEye = Vector3f(0, 0, 0);    // 現在の視点
+Vector3f CCamera::m_vNowLook = Vector3f(0, 0, 0);   // 現在の注視点
+Vector3f CCamera::m_vNowUp = Vector3f(0, 0, 0);     // 現在の上方ベクトル
 /*===========================================================================
    コンストラクタ
 ===========================================================================*/
 CCamera::CCamera()
 {
-	m_vEye = Vector3f(0.0f, 100.0f, -100.0f);
-	m_vLook = Vector3f(0.0f, 0.0f, 0.0f);
-	m_vUp = Vector3f(0.0f, 1.0f, 0.0f);
-	m_fFOVY = XMConvertToRadians(45);
-	m_fAspect = (float)(SCREEN_WIDTH / SCREEN_HEIGHT);
-	m_fNearZ = 10.0f;
-	m_fFarZ = 10000.0f;
-	m_vNowEye = m_vEye;
-	m_vNowLook = m_vLook;
-	m_vNowUp = m_vUp;
-	for (int i = 0; i < 6; ++i)
-	{
-		m_frusW[i] = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	}
+	Init();
 
 	Update();
 }

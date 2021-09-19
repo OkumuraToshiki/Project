@@ -5,74 +5,86 @@
   @date   2021/09/09
 ===========================================================================*/
 #include "FieldMesh.h"
-#include "Texture.h"
+#include "DrawBuffer.h"
+#include "ShaderResource.h"
+#include "Camera.h"
 #include "FileName.hpp"
 /*===========================================================================
   定数定義
 ===========================================================================*/
 namespace {
-	const int nNumBlockX = 100;
-	const int nNumBlockZ = 100;
+	const int   nNumBlockX = 100;
+	const int   nNumBlockZ = 100;
 	const float fSizeBlockX = 1.0f;
 	const float fSizeBlockZ = 1.0f;
 }
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-FieldMeshClass::FieldMeshClass()
+FieldMeshClass::FieldMeshClass() :m_pBuffer(new DrawBuffer()),
+m_pShader(new ShaderResource(
+	VertexShader::LAYOUT_PUNC, 
+	"data/shader/TextureVS.cso", 
+	"data/shader/TexturePS.cso"))
 {
-	HRESULT hr;
-	// 位置、向きの初期設定
-	m_Mesh.pos = XMFLOAT3(0.0f, -0.2f, 0.0f);
-	m_Mesh.rot = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	m_Mesh.primitiveType = PT_TRIANGLESTRIP;
-	// テクスチャの読み込み
-	hr = CreateTextureFromFile(GetDevice(),
+	HRESULT hr = S_OK;
+	hr = CreateTextureFromFile(
+		GetDevice(),
 		pszTexPath[TEXTURE_FIELD],
-		&m_Mesh.pTexture);
-	if (FAILED(hr))MessageBox(GetMainWnd(), "Textureエラー", "FieldMesh", MB_OK | MB_ICONEXCLAMATION);
-	XMStoreFloat4x4(&m_Mesh.mtxTexture, XMMatrixIdentity());
-	hr = MakeVertexField();
-	if (FAILED(hr))MessageBox(GetMainWnd(), "頂点生成エラー", "FieldMesh", MB_OK | MB_ICONEXCLAMATION);
+		&m_pSRV);
+	hr = MakeBuffer();
 }
 /*===========================================================================
   デストラクタ
 ===========================================================================*/
 FieldMeshClass::~FieldMeshClass()
 {
-	ReleaseMesh(&m_Mesh);
+	SAFE_DELETE(m_pShader);
+	SAFE_DELETE(m_pBuffer);
 }
 /*===========================================================================
   更新
 ===========================================================================*/
 void FieldMeshClass::Update()
 {
-	UpdateMesh(&m_Mesh);
+	
 }
 /*===========================================================================
   描画
 ===========================================================================*/
 void FieldMeshClass::Draw(LightClass* pLight)
 {
-	DrawMesh(GetDeviceContext(), &m_Mesh, pLight);
+	m_pShader->Bind();
+	m_DrawData.worldBuffer->world = XMMatrixTranspose(XMMatrixTranslation(0, 0, 0));
+	m_DrawData.worldBuffer->view = XMMatrixTranspose(XMLoadFloat4x4(&CCamera::Get()->GetView()));
+	m_DrawData.worldBuffer->proj = XMMatrixTranspose(XMLoadFloat4x4(&CCamera::Get()->GetProj()));
+	m_DrawData.eyeBuffer = CCamera::Get()->GetEye();
+	//printf("1");
+	m_DrawData.worldBuffer.BindVS(0);
+	SetTexturePS(m_pSRV, 0);
+	//polygon描画
+	m_pBuffer->Draw(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 /*===========================================================================
   頂点の作成
 ===========================================================================*/
-HRESULT FieldMeshClass::MakeVertexField()
+HRESULT FieldMeshClass::MakeBuffer()
 {
+	HRESULT hr;
+	int m_nVertexCnt;
+	int m_nIndexCnt;
 	// 頂点数の設定
-	m_Mesh.nNumVertex = (nNumBlockX + 1) * (nNumBlockZ + 1);
+	m_nVertexCnt = (nNumBlockX + 1) * (nNumBlockZ + 1);
 
 	// インデックス数の設定
-	m_Mesh.nNumIndex = (nNumBlockX + 1) * 2 * nNumBlockZ + (nNumBlockZ - 1) * 2;
+	m_nIndexCnt = (nNumBlockX + 1) * 2 * nNumBlockZ + (nNumBlockZ - 1) * 2;
 
 	// 一時的な頂点配列の作成
-	VERTEX_3D* pVertexWk = new VERTEX_3D[m_Mesh.nNumVertex];
+	VERTEX_3D* pVertexWk = new VERTEX_3D[m_nVertexCnt];
 
 	// 頂点配列の中身を埋める
 	VERTEX_3D* pVtx = pVertexWk;
-#if 0
+#if 1
 	const float texSizeX = 1.0f / nNumBlockX;
 	const float texSizeZ = 1.0f / nNumBlockZ;
 #else
@@ -102,7 +114,7 @@ HRESULT FieldMeshClass::MakeVertexField()
 	}
 
 	// 一時的なインデックス配列生成
-	int* pIndexWk = new int[m_Mesh.nNumIndex];
+	int* pIndexWk = new int[m_nIndexCnt];
 
 	//インデックスバッファの中身を埋める
 	int* pIdx = pIndexWk;
@@ -129,8 +141,16 @@ HRESULT FieldMeshClass::MakeVertexField()
 		}
 	}
 
-	HRESULT hr = MakeMeshVertex(GetDevice(), &m_Mesh, pVertexWk, pIndexWk);
-
+	hr = m_pBuffer->CreateVertexBuffer(pVertexWk, sizeof(VERTEX_3D), m_nVertexCnt);
+	if (FAILED(hr))
+	{
+		return hr;
+	}
+	hr = m_pBuffer->CreateIndexBuffer(pIndexWk, sizeof(unsigned long), m_nIndexCnt);
+	if (FAILED(hr))
+	{
+		return hr;
+	}
 	// 一時配列の解放
 	delete[] pIndexWk;
 	delete[] pVertexWk;

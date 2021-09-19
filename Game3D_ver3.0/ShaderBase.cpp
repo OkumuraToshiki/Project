@@ -47,17 +47,16 @@ HRESULT ShaderBase::Create(const char* FileName)
 //頂点シェーダー生成クラス
 //コンストラクタ
 VertexShader::VertexShader(Layout layout)
-	: m_pInputLayout(nullptr)
-	, m_layout(layout)
+	: m_layout(layout),
+	m_pInputLayout(nullptr),
+	m_pVertexShader(nullptr)
 {
 }
 //デストラクタ
 VertexShader::~VertexShader()
 {
-	
 	SAFE_RELEASE(m_pInputLayout);
 	SAFE_RELEASE(m_pVertexShader);
-	
 }
 //指定の頂点シェーダーを設定
 void VertexShader::Bind()
@@ -140,9 +139,8 @@ HRESULT VertexShader::MakeShader(void* pData, UINT size)
 //-----------------------------------------------------------------
 //ピクセルシェーダー生成クラス
 //コンストラクタ
-PixelShader::PixelShader()
+PixelShader::PixelShader():m_pPixelShader(nullptr)
 {
-	m_pPixelShader = 0;
 }
 //デストラクタ
 PixelShader::~PixelShader()
@@ -176,7 +174,7 @@ HRESULT PixelShader::MakeShader(void* pData, UINT size)
 //バッファ生成、指定クラス
 //コンストラクタ
 ShaderBuffer::ShaderBuffer()
-	:m_pBuffer(NULL)
+	:m_pBuffer(nullptr)
 {
 }
 //デストラクタ
@@ -247,9 +245,8 @@ void SetTexturePS(ID3D11ShaderResourceView* pTex, UINT slot)
 }
 //-----------------------------------------------------------------
 //ハルシェーダー生成クラス
-HullShader::HullShader()
+HullShader::HullShader():m_pHullShader(nullptr)
 {
-	m_pHullShader = 0;
 }
 
 HullShader::~HullShader()
@@ -281,9 +278,8 @@ HRESULT HullShader::MakeShader(void * pData, UINT size)
 }
 //-----------------------------------------------------------------
 //ドメインシェーダー生成クラス
-DomainShader::DomainShader()
+DomainShader::DomainShader():m_pDomainShader(nullptr)
 {
-	m_pDomainShader = 0;
 }
 
 DomainShader::~DomainShader()

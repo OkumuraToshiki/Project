@@ -86,6 +86,7 @@ void EnemyClass::Uninit()
 ===========================================================================*/
 void EnemyClass::Update()
 {
+
 	// 境界ボックス(AABB)の移動
 	XMStoreFloat3(&m_vPosBBox,
 		XMVector3TransformCoord(

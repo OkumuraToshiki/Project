@@ -44,7 +44,7 @@ BaseScene* TitleScene::Update()
 	{
 		return makeScene<GameScene>();
 	}
-#if _DEBUG_
+#ifdef _DEBUG
 	if (GetKeyPress(VK_D) && GetKeyTrigger(VK_C))
 	{
 		return makeScene<InputDebugScene>();

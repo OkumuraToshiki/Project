@@ -22,9 +22,8 @@ TPCamera::TPCamera() :m_PlayerPos(nullptr)
 {
 	Init();
 }
-TPCamera::TPCamera(Vector3f* pos,XMFLOAT4X4* world):m_PlayerPos(pos)
+TPCamera::TPCamera(Vector3f* pos,XMFLOAT4X4* world):m_PlayerPos(pos),m_PlayerWorld(world)
 {
-	m_PlayerWorld = world;
 	Init();
 }
 /*===========================================================================
@@ -32,6 +31,7 @@ TPCamera::TPCamera(Vector3f* pos,XMFLOAT4X4* world):m_PlayerPos(pos)
 ===========================================================================*/
 TPCamera::~TPCamera()
 {
+	
 }
 /*===========================================================================
   èâä˙èàóù
