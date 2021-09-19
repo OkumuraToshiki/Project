@@ -242,9 +242,6 @@
     <ClInclude Include="Defines.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="ToonPS.h">
-      <Filter>ソース ファイル\hlsl</Filter>
-    </ClInclude>
     <ClInclude Include="BaseCharactar.h">
       <Filter>ヘッダー ファイル\Object\Charactar</Filter>
     </ClInclude>

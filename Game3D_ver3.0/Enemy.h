@@ -7,6 +7,7 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 
+#include "BaseCharactar.h"
 #include "VectorClass.h"
 #include "Box.h"
 #include "light.h"
@@ -14,7 +15,7 @@ class CAssimpModel;
 /*===========================================================================
    エネミークラス
 ===========================================================================*/
-class EnemyClass
+class EnemyClass:public BaseCharactar
 {
 private:
 	Vector3f   m_Pos;
@@ -38,8 +39,9 @@ public:
 	~EnemyClass();
 	HRESULT Init();
 	void    Uninit();
-	void    Update();
-	void    Draw();
+	void    Update()override;
+	void    Draw()override;
+	std::string GetName()override;
 
 };
 #endif // !_ENEMY_H_

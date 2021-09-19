@@ -162,7 +162,6 @@
     <ClInclude Include="ShaderBuffer.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TitleScene.h" />
-    <ClInclude Include="ToonPS.h" />
     <ClInclude Include="TPCamera.h" />
     <ClInclude Include="VectorClass.h" />
   </ItemGroup>
