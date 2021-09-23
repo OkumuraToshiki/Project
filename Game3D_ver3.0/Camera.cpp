@@ -2,8 +2,7 @@
   @file   Camera.cpp
   @brief  カメラのベース
   @author HAL名古屋
-  @date
-  ->08/27 Draw()関数を改変
+  @date   08/27->09/23視錘台見直し
 ===========================================================================*/
 #include "Camera.h"
 #include "debugproc.h"

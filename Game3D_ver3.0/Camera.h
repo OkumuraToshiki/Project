@@ -2,7 +2,7 @@
   @file   Camera.h
   @brief  カメラのベース
   @author HAL名古屋
-  @date
+  @date   08/27
 ===========================================================================*/
 #ifndef _CAMERA_H_
 #define _CAMERA_H_

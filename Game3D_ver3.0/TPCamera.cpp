@@ -2,7 +2,7 @@
   @file   TPCamera.cpp
   @brief  ‚RlÌ‹“_ƒJƒƒ‰
   @author HAL–¼ŒÃ‰®
-  @date
+  @date   08/27
 ===========================================================================*/
 #include "TPCamera.h"
 #include "Player.h"
