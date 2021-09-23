@@ -6,12 +6,12 @@
 ===========================================================================*/
 #ifndef _GAMESCENE_H_
 #define _GAMESCENE_H_
+
 #include "BaseScene.h"
 class TPCamera;
 class FieldMeshClass;
 class CharacterMgr;
 class PlayerClass;
-class EnemyClass;
 class LightClass;
 /*===========================================================================
   GameSceneƒNƒ‰ƒX
@@ -23,7 +23,6 @@ private:
 	FieldMeshClass* m_pField;
 	CharacterMgr* m_pCharaMgr;
 	PlayerClass*  m_pPlayer;
-	EnemyClass*   m_pEnemy;
 	LightClass*   m_pLight;
 public:
 	GameScene();
