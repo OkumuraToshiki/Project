@@ -46,7 +46,7 @@ HRESULT PlayerClass::Init()
 	if (!m_pModel->Load(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_KNIGHT]))
 	{
 		hr = E_FAIL;
-		MessageBoxA(GetMainWnd(), "モデルデータ読込エラー", "PlayerModel", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxA(GetMainWnd(), "モデルデータ読込エラー", "PlayerClass", MB_OK | MB_ICONEXCLAMATION);
 	}
 	else {
 		m_pModel->SetCamera(CCamera::Get());

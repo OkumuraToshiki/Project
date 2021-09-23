@@ -47,7 +47,7 @@ HRESULT EnemyClass::Init()
 		if (!m_pModel->Load(GetDevice(), GetDeviceContext(), pszModelPath[MODEL_ENEMY]))
 		{
 			hr = E_FAIL;
-			MessageBoxA(GetMainWnd(), "モデルデータ読込エラー", "EnemyModel", MB_OK | MB_ICONEXCLAMATION);
+			MessageBoxA(GetMainWnd(), "モデルデータ読込エラー", "EnemyClass", MB_OK | MB_ICONEXCLAMATION);
 		}
 		else {
 			m_pModel->SetCamera(CCamera::Get());
@@ -102,6 +102,7 @@ void EnemyClass::Update()
 ===========================================================================*/
 void EnemyClass::Draw()
 {
+	//if(CCamera::Get()->CollisionViewFrustum(&m_vPosBBox,m_pModel))
 	XMMATRIX mtxWorld, mtxSize, mtxRot, mtxTranslate;
 	// ワールドマトリックスの初期化
 	mtxWorld = XMMatrixIdentity();
@@ -148,7 +149,7 @@ std::string EnemyClass::GetName()
 	return "EnemyClass";
 }
 
-BaseCharacter * EnemyClass::Create(Vector3f pos) const
+BaseCharacter* EnemyClass::Create(Vector3f pos) const
 {
 	return new EnemyClass(pos);
 }
