@@ -224,6 +224,7 @@ private:
 
 	DirectX::XMFLOAT3 m_vBBox;
 	DirectX::XMFLOAT3 m_vCenter;
+	
 
 	const aiScene* m_pScene;
 	SceneAnimator* m_pAnimator;
@@ -263,10 +264,12 @@ public:
 
 	DirectX::XMFLOAT3& GetBBox() { return m_vBBox; }
 	DirectX::XMFLOAT3& GetCenter() { return m_vCenter; }
+	
 
 private:
 	void ScaleAsset();
 	void CalculateBounds(aiNode* piNode, aiVector3D* p_avOut, const aiMatrix4x4& piMatrix);
+	
 	void processNode(ID3D11Device* pDevice, aiNode* node);
 	CAssimpMesh processMesh(ID3D11Device* pDevice, aiMesh* mesh);
 	TAssimpMaterial loadMaterial(ID3D11Device* pDevice, aiMaterial* mat, aiMesh* mesh);

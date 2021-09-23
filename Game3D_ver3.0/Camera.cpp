@@ -40,10 +40,11 @@ HRESULT CCamera::Init()
 	m_vEye = Vector3f(0.0f, 100.0f, -100.0f);
 	m_vLook = Vector3f(0.0f, 0.0f, 0.0f);
 	m_vUp = Vector3f(0.0f, 1.0f, 0.0f);
-	m_fFOVY = XMConvertToRadians(45);
+	m_fViewAngle = 45.0f;
+	m_fFovy = XMConvertToRadians(m_fViewAngle);
 	m_fAspect = (float)(SCREEN_WIDTH / SCREEN_HEIGHT);
-	m_fNearZ = 10.0f;
-	m_fFarZ = 10000.0f;
+	m_fNearZ = 1.0f;
+	m_fFarZ = 1000.0f;
 	m_vNowEye = m_vEye;
 	m_vNowLook = m_vLook;
 	m_vNowUp = m_vUp;
@@ -89,7 +90,7 @@ void CCamera::Update()
 		XMVECTOR(m_vNowUp)));
 	// 射影変換更新
 	XMStoreFloat4x4(&m_mProj,
-		XMMatrixPerspectiveFovLH(m_fFOVY, m_fAspect,
+		XMMatrixPerspectiveFovLH(m_fFovy, m_fAspect,
 			m_fNearZ, m_fFarZ));
 
 	//視錘台設定
@@ -129,7 +130,7 @@ Vector3f CCamera::GetAxisZ()
 {
 	Vector3f forward;
 	//カメラZ軸を求める
-	forward = m_vNowLook - m_vNowEye;
+	forward = m_vLook - m_vEye;
 	forward.Normalize();
 	return forward;
 }
@@ -140,7 +141,7 @@ void CCamera::SetFrustum()
 {
 	//視錘台の上下左右の法線ベクトルを求める
 	XMFLOAT4 m_frus[6];//視錘台 0上 1下 2左 3右 4前 5後
-	float fTan = tanf(XMConvertToRadians(m_fFOVY*0.5f));
+	float fTan = tanf(XMConvertToRadians(m_fViewAngle*0.5f));
 	//上下
 	m_frus[0] = XMFLOAT4(0, -1.0f, fTan, 0.0f);
 	m_frus[1] = XMFLOAT4(0.0f, 1.0f, fTan, 0.0f);
@@ -182,7 +183,7 @@ XMMATRIX CCamera::GetMatrix()
 	//カメラZ軸を求める
 	forward = GetAxisZ();
 	//カメラX軸を求める
-	right = m_vNowUp.Cross(forward);
+	right = m_vUp.Cross(forward);
 	right.Normalize();
 
 	//カメラY軸を求める

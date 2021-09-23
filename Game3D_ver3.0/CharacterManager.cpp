@@ -18,6 +18,7 @@ CharacterMgr::CharacterMgr():m_pFactory(new CharaFactory())
 	m_pFactory->Register("EnemyClass" , new EnemyClass );
 	//m_List.emplace_back(m_pFactory->CreateEntity("PlayerClass", Vector3f(0, 0, 0)));
 	m_List.emplace_back(m_pFactory->CreateEntity("EnemyClass", Vector3f(-50, 0, 100)));
+	m_List.emplace_back(m_pFactory->CreateEntity("EnemyClass", Vector3f(-50, 0, 50)));
 }
 /*===========================================================================
   デストラクタ

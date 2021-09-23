@@ -42,16 +42,17 @@ HRESULT TPCamera::Init()
 	m_vEye = Vector3f(0.0f, 0.0f, -50.0f);
 	m_vLook = Vector3f(0.0f, 0.0f, 0.0f);
 	m_vUp = Vector3f(0.0f, 1.0f, 0.0f);
-	m_fFOVY = XMConvertToRadians(65);
+	m_fViewAngle = 55.0f;
+	m_fFovy = XMConvertToRadians(m_fViewAngle);
 	m_fAspect = (float)(SCREEN_WIDTH / SCREEN_HEIGHT);
-	m_fNearZ = 10.0f;
-	m_fFarZ = 10000.0f;
+	m_fNearZ = 1.0f;
+	m_fFarZ = 1000.0f;
 	
 	for (int i = 0; i < 6; ++i)
 	{
 		m_frusW[i] = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
 	}
-
+	CCamera::Update();
 	return hr;
 }
 /*===========================================================================

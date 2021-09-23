@@ -17,7 +17,8 @@ protected:
 	Vector3f		m_vUp;		// 上方ベクトル
 	XMFLOAT4X4		m_mView;	// ビュー変換
 	XMFLOAT4X4		m_mProj;	// 射影変換
-	float			m_fFOVY;	// 視野角
+	float           m_fViewAngle;
+	float			m_fFovy;	// 視野角
 	float			m_fAspect;	// アスペクト比
 	float			m_fNearZ;	// 前方クリップ距離
 	float			m_fFarZ;	// 後方クリップ距離

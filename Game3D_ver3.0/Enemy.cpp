@@ -102,7 +102,7 @@ void EnemyClass::Update()
 ===========================================================================*/
 void EnemyClass::Draw()
 {
-	//if(CCamera::Get()->CollisionViewFrustum(&m_vPosBBox,m_pModel))
+	if (CCamera::Get()->CollisionViewFrustum(&m_vPosBBox, m_pModel->GetBBox().y)==0)return;
 	XMMATRIX mtxWorld, mtxSize, mtxRot, mtxTranslate;
 	// ワールドマトリックスの初期化
 	mtxWorld = XMMatrixIdentity();

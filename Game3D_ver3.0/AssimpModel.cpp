@@ -1112,7 +1112,6 @@ void CAssimpModel::CalculateBounds(aiNode* piNode, aiVector3D* p_avOut, const ai
 		CalculateBounds(piNode->mChildren[i], p_avOut, aiMe);
 	}
 }
-
 // 境界ボックス計算
 void CAssimpModel::ScaleAsset()
 {
