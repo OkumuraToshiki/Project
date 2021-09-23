@@ -8,16 +8,16 @@
 #define _PLAYER_H_
 
 #include "main.h"
-#include "BaseCharactar.h"
+#include "BaseCharacter.h"
 #include "Quaternion.h"
 #include "Box.h"
 #include "light.h"
-
+#include "Creator.h"
 class CAssimpModel;
 /*===========================================================================
    プレイヤークラス
 ===========================================================================*/
-class PlayerClass:public BaseCharactar
+class PlayerClass:public BaseCharacter,public IBaseCreator
 {
 private:
 	Vector3f  m_Pos;
@@ -27,7 +27,6 @@ private:
 	XMFLOAT4X4 m_World;
 
 	CAssimpModel*    m_pModel;
-	LightClass*      m_Light;
 	Vector3f         m_vCenter;     // 境界ボックス中心座標
 	Vector3f         m_vBBox;       // 境界ボックス サイズ
 	BoxClass*        m_box;         // 境界ボックス表示
@@ -38,7 +37,7 @@ private:
 	float animTime;
 public:
 	PlayerClass() = default;
-	PlayerClass(Vector3f _pos, LightClass*  _light);
+	PlayerClass(Vector3f _pos);
 	~PlayerClass();
 	HRESULT Init();
 	void    Uninit();
@@ -47,7 +46,7 @@ public:
 	std::string GetName()override;
 	Vector3f& GetPos();
 	XMFLOAT4X4& GetWorld();
-	
+	BaseCharacter* Create(Vector3f pos)const override;
 private:
 	bool canJump();
 };

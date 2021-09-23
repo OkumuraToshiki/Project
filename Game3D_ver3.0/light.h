@@ -18,6 +18,7 @@ private:
 	Vector4f m_ambient;
 	Vector4f m_specular;
 	Vector3f m_direction;
+	static LightClass* m_pLight;
 public:
 	LightClass();
 	~LightClass();
@@ -26,9 +27,8 @@ public:
 	const Vector4f& GetDiffuse();
 	const Vector4f& GetAmbient();
 	const Vector4f& GetSpecular();
-	void SetDirection(const Vector3f _dir);
-	void SetDiffuse(const Vector4f _diffuse);
-	void SetAmbient(const Vector4f _ambient);
-	void SetSpecular(const Vector4f _specular);
+	
+	static void Set(LightClass* pLight) { m_pLight = pLight; }
+	static LightClass* Get() { return m_pLight; }
 };
 #endif // !_LIGHT_H_

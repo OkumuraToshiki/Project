@@ -141,6 +141,12 @@
     <ClCompile Include="ShaderResource.cpp">
       <Filter>ソース ファイル\System</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterFactory.cpp">
+      <Filter>ソース ファイル\Object\Charactar</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterManager.cpp">
+      <Filter>ソース ファイル\Object\Charactar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -242,7 +248,19 @@
     <ClInclude Include="Defines.h">
       <Filter>ヘッダー ファイル\System</Filter>
     </ClInclude>
-    <ClInclude Include="BaseCharactar.h">
+    <ClInclude Include="Creator.h">
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="Factory.h">
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseCharacter.h">
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterFactory.h">
+      <Filter>ヘッダー ファイル\Object\Charactar</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterManager.h">
       <Filter>ヘッダー ファイル\Object\Charactar</Filter>
     </ClInclude>
   </ItemGroup>

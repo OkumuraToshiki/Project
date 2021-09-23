@@ -18,9 +18,9 @@ int           EnemyClass::m_nRef = 0;
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-EnemyClass::EnemyClass(Vector3f _pos, LightClass* _light)
+EnemyClass::EnemyClass(Vector3f _pos)
 	: m_Pos(_pos), m_Move(0, 0, 0), m_Rot(0, 0, 0), m_Size(1.0f, 1.0f, 1.0f),
-	 m_Light(_light), m_box(nullptr)
+	 m_box(nullptr)
 {
 	m_bCanJump = false;
 	m_bIsHit = false;
@@ -51,7 +51,7 @@ HRESULT EnemyClass::Init()
 		}
 		else {
 			m_pModel->SetCamera(CCamera::Get());
-			m_pModel->SetLight(m_Light);
+			m_pModel->SetLight(LightClass::Get());
 
 			// 境界ボックス初期化
 			m_vCenter = m_pModel->GetCenter();
@@ -116,15 +116,17 @@ void EnemyClass::Draw()
 	// ワールドマトリックスの設定
 	XMStoreFloat4x4(&m_World, mtxWorld);
 	m_pModel->SetCamera(CCamera::Get());
-	m_pModel->SetLight(m_Light);
+	LightClass* pLight = LightClass::Get();
+	m_pModel->SetLight(pLight);
 	// ---FBXファイル表示---
 	m_pModel->Draw(GetDeviceContext(), m_World);
 	//SetBlendState(BS_NONE);			// アルファ処理しない
 	//SetZWrite(false);
 	//SetBlendState(BS_ALPHABLEND);	// 半透明描画
 	// eTransparentOnly);
-	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
+#ifdef _DEBUG
 	//---ボックス表示---
+	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
 	if (m_bIsHit) {
 		XMFLOAT4 vRed(1.0f, 0.0f, 0.0f, 0.5f);
 		m_box->SetColor(&vRed);
@@ -133,14 +135,20 @@ void EnemyClass::Draw()
 		XMFLOAT4 vGreen(0.0f, 1.0f, 0.0f, 0.5f);
 		m_box->SetColor(&vGreen);
 	}
-	m_box->Draw(m_Light);	// 境界ボックス描画
+	m_box->Draw(pLight);	// 境界ボックス描画
+#endif // _DEBUG
 	SetCullMode(CULLMODE_CW);	// 前面カリング(表を描かない)
 	SetZWrite(true);
 }
 /*===========================================================================
-クラス取得
+クラス名取得
 ===========================================================================*/
 std::string EnemyClass::GetName()
 {
 	return "EnemyClass";
+}
+
+BaseCharacter * EnemyClass::Create(Vector3f pos) const
+{
+	return new EnemyClass(pos);
 }

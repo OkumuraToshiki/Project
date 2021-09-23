@@ -15,8 +15,8 @@
 /*===========================================================================
   コンストラクタ
 ===========================================================================*/
-PlayerClass::PlayerClass(Vector3f _pos, LightClass* _light)
-	:m_pModel(nullptr), m_Pos(_pos), m_Light(_light), m_Move(0, 0, 0),m_Rot(0,0,0), m_Size(1.0f, 1.0f, 1.0f),
+PlayerClass::PlayerClass(Vector3f _pos)
+	:m_pModel(nullptr), m_Pos(_pos), m_Move(0, 0, 0),m_Rot(0,0,0), m_Size(1.0f, 1.0f, 1.0f),
 	m_box(nullptr)
 {
 	m_bCanJump = false;
@@ -50,7 +50,7 @@ HRESULT PlayerClass::Init()
 	}
 	else {
 		m_pModel->SetCamera(CCamera::Get());
-		m_pModel->SetLight(m_Light);
+		m_pModel->SetLight(LightClass::Get());
 
 		// 境界ボックス初期化
 		m_vCenter = m_pModel->GetCenter();
@@ -144,25 +144,28 @@ void PlayerClass::Draw()
 	XMStoreFloat4x4(&m_World, mtxWorld);
 
 	m_pModel->SetCamera(CCamera::Get());
-	m_pModel->SetLight(m_Light);
+	LightClass* pLight = LightClass::Get();
+	m_pModel->SetLight(pLight);
 	// ---FBXファイル表示---
-	SetBlendState(BS_NONE);			// アルファ処理しない
+	SetBlendState(BS_NONE);        // アルファ処理しない
 	m_pModel->Draw(GetDeviceContext(), m_World, eOpacityOnly);
 	SetZWrite(false);
-	SetBlendState(BS_ALPHABLEND);	// 半透明描画
+	SetBlendState(BS_ALPHABLEND);  // 半透明描画
 	m_pModel->Draw(GetDeviceContext(), m_World, eTransparentOnly);
-
-	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
+#ifdef _DEBUG
 	//---ボックス表示---
-	//if (m_bIsHit) {
-	//	XMFLOAT4 vRed(1.0f, 0.0f, 0.0f, 0.5f);
-	//	m_box->SetColor(&vRed);
-	//}
-	//else {
-	//	XMFLOAT4 vGreen(0.0f, 1.0f, 0.0f, 0.5f);
-	//	m_box->SetColor(&vGreen);
-	//}
-	//m_box->Draw(m_Light);	// 境界ボックス描画
+	SetCullMode(CULLMODE_CCW);	// 背面カリング(裏を描かない)
+	if (m_bIsHit) {
+		XMFLOAT4 vRed(1.0f, 0.0f, 0.0f, 0.5f);
+		m_box->SetColor(&vRed);
+	}
+	else {
+		XMFLOAT4 vGreen(0.0f, 1.0f, 0.0f, 0.5f);
+		m_box->SetColor(&vGreen);
+	}
+	m_box->Draw(pLight);	// 境界ボックス描画
+#endif // _DEBUG
+
 	SetCullMode(CULLMODE_CW);	// 前面カリング(表を描かない)
 	SetZWrite(true);
 }
@@ -186,6 +189,10 @@ Vector3f& PlayerClass::GetPos()
 XMFLOAT4X4& PlayerClass::GetWorld()
 {
 	return m_World;
+}
+BaseCharacter * PlayerClass::Create(Vector3f pos) const
+{
+	return new PlayerClass(pos);
 }
 /*===========================================================================
 ジャンプできるか

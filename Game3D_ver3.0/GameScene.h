@@ -9,6 +9,7 @@
 #include "BaseScene.h"
 class TPCamera;
 class FieldMeshClass;
+class CharacterMgr;
 class PlayerClass;
 class EnemyClass;
 class LightClass;
@@ -20,6 +21,7 @@ class GameScene :public BaseScene
 private:
 	TPCamera*     m_pTPcamera;
 	FieldMeshClass* m_pField;
+	CharacterMgr* m_pCharaMgr;
 	PlayerClass*  m_pPlayer;
 	EnemyClass*   m_pEnemy;
 	LightClass*   m_pLight;
