@@ -94,10 +94,11 @@ void CCamera::Update()
 
 	//視錘台設定
 	SetFrustum();
-
-	PrintDebugProc("Eye:%f %f %f\n", m_vEye.x, m_vEye.y, m_vEye.z);
-	PrintDebugProc("Look:%f %f %f\n", m_vLook.x, m_vLook.y, m_vLook.z);
-	PrintDebugProc("Up:%f %f %f\n", m_vUp.x, m_vUp.y, m_vUp.z);
+#ifdef _DEBUG
+	PrintDebugProc("Eye:%.2f %.2f %.2f\n", m_vEye.x, m_vEye.y, m_vEye.z);
+	PrintDebugProc("Look:%.2f %.2f %.2f\n", m_vLook.x, m_vLook.y, m_vLook.z);
+	PrintDebugProc("Up:%.2f %.2f %.2f\n", m_vUp.x, m_vUp.y, m_vUp.z);
+#endif // _DEBUG
 }
 /*===========================================================================
     //視錘台との交差判定  (境界球使用)
@@ -162,12 +163,13 @@ void CCamera::SetFrustum()
 	XMMATRIX mW;
 	mW = GetMatrix();
 	//平面をワールド空間に配置
+	//ワールドマトリックスは、逆行列の転置行列を渡す
 	mW = XMMatrixInverse(nullptr, mW);
 	mW = XMMatrixTranspose(mW);
 	for (int i = 0; i < 6; ++i)
 	{
 		XMStoreFloat4(&m_frusW[i],
-			XMPlaneTransform(//※ワールドマトリックスは、逆行列の転置行列を渡す
+			XMPlaneTransform(
 				XMLoadFloat4(&m_frus[i]), mW));
 	}
 }
