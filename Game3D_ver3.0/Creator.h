@@ -13,7 +13,6 @@ class IBaseCreator
 {
 public:
 	virtual ~IBaseCreator() {};
-	//virtual BaseCharacter* Create() const = 0;
 	virtual BaseCharacter* Create(Vector3f pos)const = 0;
 };
 #endif // !_CREATOR_H
